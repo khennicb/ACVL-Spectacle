@@ -1,2 +1,3 @@
-*.bak_*
+*.vpp.bak_*
 *.vux
+*.vpp.lck
