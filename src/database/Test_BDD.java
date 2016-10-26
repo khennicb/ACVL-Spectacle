@@ -18,6 +18,7 @@ public class Test_BDD {
         
         DatabaseManager.getDatabaseManager().connect();
         DatabaseManager.getDatabaseManager().createTables();
+        DatabaseManager.getDatabaseManager().printTable();
         DatabaseManager.getDatabaseManager().dropAllTable();
         DatabaseManager.getDatabaseManager().close();
         

@@ -62,6 +62,8 @@ public class DatabaseManager {
         createSpectacleTable();
         createSalleTable();
         createRepresentationTable();
+        createCategorieTable();
+        createPlaceTable();
         
         
         
@@ -140,11 +142,96 @@ public class DatabaseManager {
         }
     }
     
+    public void createCategorieTable() {
+        String userTable =  "CREATE TABLE IF NOT EXISTS CATEGORIE (" +
+                                " CATEGORIE_ID       INT                PRIMARY KEY  NOT NULL," +
+                                " NOM                TEXT               NOT NULL, " + 
+                                " TARIF              REAL               NOT NULL " + 
+                            ")"; 
+        try {
+            statement.executeUpdate(userTable);
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void createPlaceTable() {
+        String userTable =  "CREATE TABLE IF NOT EXISTS PLACE (" +
+                                " PLACE_ID           INT                PRIMARY KEY  NOT NULL," +
+                                " SALLE              INT                NOT NULL, " + 
+                                " CATEGORIE          INT                NOT NULL, " +   
+                                " NOMERO_DE_RANG     INT                NOT NULL, " + 
+                                " PLACE_DANS_LE_RANG INT                NOT NULL, " +
+                                " FOREIGN KEY(SALLE)      REFERENCES SALLE(SALLE_ID), " +
+                                " FOREIGN KEY(CATEGORIE)  REFERENCES CATEGORIE(CATEGORIE_ID)  " +
+                            ")"; 
+        try {
+            statement.executeUpdate(userTable);
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void createPlaceOccupeTable() {
+        String userTable =  "CREATE TABLE IF NOT EXISTS PLACE_OCCUPE (" +
+                                " PLACE              INT                PRIMARY KEY  NOT NULL," +
+                                " REPRESENTATION     INT                PRIMARY KEY  NOT NULL," + 
+                                " DOSSIER            INT                NOT NULL, " +   
+                                " PROPRIETAIRE       INT                NOT NULL, " + 
+                                " ACHETE             INT(1)                NOT NULL, " +
+                                " FOREIGN KEY(SALLE)      REFERENCES SALLE(SALLE_ID), " +
+                                " FOREIGN KEY(REPRESENTATION)  REFERENCES REPRESENTATION(REPRESENTATION_ID),  " +
+                                " FOREIGN KEY(DOSSIER)      REFERENCES DOSSIER(DOSSIER_ID), " +
+                                " FOREIGN KEY(PROPRIETAIRE)      REFERENCES UTILISATEUR(UTILISATEUR_ID) " +
+                            ")"; 
+        try {
+            statement.executeUpdate(userTable);
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void printTable(){
+        
+        try {
+            DatabaseMetaData md = connection.getMetaData();
+            ResultSet rs;
+            rs = md.getTables(null, null, "%", null);
+            while (rs.next()) {
+                System.out.println(rs.getString(3));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        
+        
+    }
+    
+    
     public void dropAllTable(){
 
-        String userTable        = "DROP TABLE UTILISATEUR";
-        String themeTable       = "DROP TABLE THEME";
-        String spectacleTable   = "DROP TABLE SPECTACLE";
+        String place_occupeTable    = "DROP TABLE PLACE_OCCUPE";
+        String placeTable           = "DROP TABLE PLACE";
+        String representationTable  = "DROP TABLE REPRESENTATION";
+        String spectacleTable       = "DROP TABLE SPECTACLE";
+        String salleTable           = "DROP TABLE SALLE";
+        String categorieTable       = "DROP TABLE CATEGORIE";
+        String dossierTable         = "DROP TABLE DOSSIER";
+        String userTable            = "DROP TABLE UTILISATEUR";
+        String themeTable           = "DROP TABLE THEME";
+        
+        
+        try {
+            statement.executeUpdate(place_occupeTable);
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            statement.executeUpdate(placeTable);
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
         try {
             statement.executeUpdate(userTable);
         } catch (SQLException ex) {
@@ -159,11 +246,27 @@ public class DatabaseManager {
             statement.executeUpdate(spectacleTable);
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            statement.executeUpdate(salleTable);
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            statement.executeUpdate(representationTable);
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }      
+        try {
+            statement.executeUpdate(placeTable);
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }      
+        try {
+            statement.executeUpdate(categorieTable);
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
         }                
-        
-        
     }
-    
-    
     
 }
