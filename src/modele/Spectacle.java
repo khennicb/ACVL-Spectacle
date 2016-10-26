@@ -2,6 +2,7 @@ package modele;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 
 public class Spectacle {
 	private int numero;
@@ -17,5 +18,12 @@ public class Spectacle {
 		this.theme = theme;
 		this.representations = new ArrayList<Representation>();
 	}
+        
+        public List<Representation> getAllRepresentations(){
+            return representations;
+        }
 
+        public void addRepresentation(Date date, int heure, Salle salle){
+            representations.add(new Representation(date, heure, salle, this));
+        }
 }

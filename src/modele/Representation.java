@@ -5,7 +5,7 @@ import java.util.Date;
 
 public class Representation implements FactoryVendeur {
 	private Date date;
-	// utilité d'heure si date ?
+	// utilite d'heure si date ?
 	private int heure;
 	private Salle salle;
 	private Spectacle spectacle;

@@ -18,4 +18,8 @@ public class Client extends Utilisateur{
 		this.reservations = new ArrayList<Reservation>();
 		this.dossiers = new ArrayList<Dossier>();
 	}
+        
+        public List<Reservation> getAllReservations(){
+            return reservations;
+        }
 }
