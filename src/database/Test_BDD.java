@@ -5,6 +5,7 @@
  */
 package database;
 import java.sql.*;
+import modele.Client;
 /**
  *
  * @author benkh_000
@@ -19,6 +20,11 @@ public class Test_BDD {
         DatabaseManager.getDatabaseManager().connect();
         DatabaseManager.getDatabaseManager().createTables();
         DatabaseManager.getDatabaseManager().printTable();
+        
+        Client client = new Client("login", "mdp", "Bernard", "Dinoumouk", "totodu38@tes_pa_bo.fr");
+        DatabaseManager.getDatabaseManager().insertUtilisateur(client);
+        
+        
         DatabaseManager.getDatabaseManager().dropAllTable();
         DatabaseManager.getDatabaseManager().close();
         

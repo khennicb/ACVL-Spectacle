@@ -7,6 +7,7 @@ package database;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modele.*;
 
 /**
  *
@@ -64,14 +65,17 @@ public class DatabaseManager {
         createRepresentationTable();
         createCategorieTable();
         createPlaceTable();
-        
-        
+        createPlaceOccupeTable();
         
     }
     
+    
+    
+    
+    
     public void createUtilisateurTable() {
         String userTable =  "CREATE TABLE IF NOT EXISTS UTILISATEUR (" +
-                                " UTILISATEUR_ID   INT                PRIMARY KEY  NOT NULL," +
+                                " UTILISATEUR_ID   INTEGER            PRIMARY KEY AUTOINCREMENT ," +
                                 " LOGIN            TEXT               NOT NULL, " + 
                                 " Password         INT                NOT NULL, " + 
                                 " TYPE_UTILISATEUR INT                NOT NULL, " + 
@@ -88,7 +92,7 @@ public class DatabaseManager {
     
     public void createThemeTable() {
         String userTable =  "CREATE TABLE IF NOT EXISTS THEME (" +
-                                " THEME_ID   INT                PRIMARY KEY  NOT NULL," +
+                                " THEME_ID   INTEGER                PRIMARY KEY AUTOINCREMENT NOT NULL," +
                                 " NOM        TEXT               NOT NULL " + 
                             ")"; 
         try {
@@ -100,7 +104,7 @@ public class DatabaseManager {
     
     public void createSpectacleTable() {
         String userTable =  "CREATE TABLE IF NOT EXISTS SPECTACLE (" +
-                                " SPECTACLE_ID     INT                PRIMARY KEY  NOT NULL," +
+                                " SPECTACLE_ID     INTEGER                PRIMARY KEY AUTOINCREMENT NOT NULL," +
                                 " THEME            INT                NOT NULL, " + 
                                 " NOM              TEXT               NOT NULL, " + 
                                 " DESCRIPTION      TEXT               NOT NULL, " + 
@@ -115,7 +119,7 @@ public class DatabaseManager {
     
     public void createSalleTable() {
         String userTable =  "CREATE TABLE IF NOT EXISTS SALLE (" +
-                                " SALLE_ID     INT                PRIMARY KEY  NOT NULL," +
+                                " SALLE_ID     INTEGER                PRIMARY KEY AUTOINCREMENT NOT NULL," +
                                 " NOM          TEXT               NOT NULL " + 
                             ")"; 
         try {
@@ -127,7 +131,7 @@ public class DatabaseManager {
     
     public void createRepresentationTable() {
         String userTable =  "CREATE TABLE IF NOT EXISTS REPRESENTATION (" +
-                                " REPRESENTATION_ID  INT                PRIMARY KEY  NOT NULL," +
+                                " REPRESENTATION_ID  INTEGER                PRIMARY KEY AUTOINCREMENT NOT NULL," +
                                 " SPECTACLE          INT                NOT NULL, " + 
                                 " SALLE              INT                NOT NULL, " + 
                                 " DATE               TEXT               NOT NULL, " +   // as ISO8601 strings ("YYYY-MM-DD").
@@ -144,7 +148,7 @@ public class DatabaseManager {
     
     public void createCategorieTable() {
         String userTable =  "CREATE TABLE IF NOT EXISTS CATEGORIE (" +
-                                " CATEGORIE_ID       INT                PRIMARY KEY  NOT NULL," +
+                                " CATEGORIE_ID       INTEGER                PRIMARY KEY AUTOINCREMENT NOT NULL," +
                                 " NOM                TEXT               NOT NULL, " + 
                                 " TARIF              REAL               NOT NULL " + 
                             ")"; 
@@ -157,7 +161,7 @@ public class DatabaseManager {
     
     public void createPlaceTable() {
         String userTable =  "CREATE TABLE IF NOT EXISTS PLACE (" +
-                                " PLACE_ID           INT                PRIMARY KEY  NOT NULL," +
+                                " PLACE_ID           INTEGER                PRIMARY KEY AUTOINCREMENT NOT NULL," +
                                 " SALLE              INT                NOT NULL, " + 
                                 " CATEGORIE          INT                NOT NULL, " +   
                                 " NOMERO_DE_RANG     INT                NOT NULL, " + 
@@ -174,15 +178,15 @@ public class DatabaseManager {
     
     public void createPlaceOccupeTable() {
         String userTable =  "CREATE TABLE IF NOT EXISTS PLACE_OCCUPE (" +
-                                " PLACE              INT                PRIMARY KEY  NOT NULL," +
-                                " REPRESENTATION     INT                PRIMARY KEY  NOT NULL," + 
+                                " PLACE              INT                NOT NULL," +
+                                " REPRESENTATION     INT                NOT NULL," + 
                                 " DOSSIER            INT                NOT NULL, " +   
                                 " PROPRIETAIRE       INT                NOT NULL, " + 
-                                " ACHETE             INT(1)                NOT NULL, " +
-                                " FOREIGN KEY(SALLE)      REFERENCES SALLE(SALLE_ID), " +
+                                " ACHETE             INT(1)             NOT NULL, " +
                                 " FOREIGN KEY(REPRESENTATION)  REFERENCES REPRESENTATION(REPRESENTATION_ID),  " +
                                 " FOREIGN KEY(DOSSIER)      REFERENCES DOSSIER(DOSSIER_ID), " +
-                                " FOREIGN KEY(PROPRIETAIRE)      REFERENCES UTILISATEUR(UTILISATEUR_ID) " +
+                                " FOREIGN KEY(PROPRIETAIRE)      REFERENCES UTILISATEUR(UTILISATEUR_ID), " +
+                                " PRIMARY KEY (PLACE, REPRESENTATION) " +
                             ")"; 
         try {
             statement.executeUpdate(userTable);
@@ -258,15 +262,52 @@ public class DatabaseManager {
             Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
         }      
         try {
-            statement.executeUpdate(placeTable);
-        } catch (SQLException ex) {
-            Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
-        }      
-        try {
             statement.executeUpdate(categorieTable);
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
         }                
     }
+    
+    // INSERT
+
+    
+    public void insertUtilisateur(Utilisateur utilisateur){
+        try {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("INSERT INTO UTILISATEUR (LOGIN, PASSWORD, TYPE_UTILISATEUR, NOM, PRENOM, MAIL) VALUES(?,?,?,?,?,?)");
+            preparedStatement.setString(1, utilisateur.getLogin());
+            preparedStatement.setString(2, utilisateur.getPassword());
+            
+            if(utilisateur instanceof Client){
+                Client client = (Client) utilisateur;
+                preparedStatement.setInt(3, 0);
+                preparedStatement.setString(4, client.getNom());
+                preparedStatement.setString(5, client.getPrenom());
+                if(client.getMail() != null) {
+                    preparedStatement.setString(6, client.getMail());
+                }
+            } else if (utilisateur instanceof ResponsableProgrammation) {
+                preparedStatement.setInt(3, 1);
+            } else if (utilisateur instanceof SuperUser) {
+                preparedStatement.setInt(3, 2);
+            }
+            
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    public void insertSpectacle(Spectacle spectacle){
+        try {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("INSERT INTO SPECTACLE (NOM, DESCRIPTION) VALUES(?,?)");
+
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
+    
     
 }

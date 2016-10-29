@@ -10,4 +10,14 @@ public abstract class Utilisateur {
         this.password = password;
     }
 
+    public String getLogin() {
+        return login;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+    
+    
+
 }
