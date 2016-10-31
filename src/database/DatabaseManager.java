@@ -40,10 +40,10 @@ public class DatabaseManager {
             System.out.println("Connexion a " + DBPath + " avec succès");
         } catch (ClassNotFoundException notFoundException) {
             notFoundException.printStackTrace();
-            System.out.println("Erreur de connecxion");
+            System.out.println("Erreur de connexion");
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
-            System.out.println("Erreur de connecxion");
+            System.out.println("Erreur de connexion");
         }
     }
  
