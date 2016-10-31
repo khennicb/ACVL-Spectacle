@@ -1,6 +1,6 @@
 package modele;
 
-class Theme {
+public class Theme {
     private String nom;
 
     public Theme(String nom) {
