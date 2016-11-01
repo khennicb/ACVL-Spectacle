@@ -32,7 +32,6 @@ public class FenetrePrincipale {
 		frame.setBounds(100, 100, 680, 566);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
-		
 		frame.getContentPane().add(this.header.getPanel(), BorderLayout.NORTH);
 		frame.getContentPane().add(this.center.getPanel(), BorderLayout.CENTER);
 		this.center.getPanel().setLayout(new GridLayout(1, 0, 0, 0));
@@ -40,10 +39,11 @@ public class FenetrePrincipale {
 	
 	
 	public static void main (String [] args) {
+		String [] tab = {"test"};
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					FenetrePrincipale window = new FenetrePrincipale(new PanelHeaderResponsable(), new PanelCenter());
+					FenetrePrincipale window = new FenetrePrincipale(new PanelHeaderConnexion(), new PanelCenterListeSpectacles(tab) );
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
