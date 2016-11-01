@@ -106,6 +106,7 @@ public class DatabaseManager {
         String userTable =  "CREATE TABLE IF NOT EXISTS SPECTACLE (" +
                                 " SPECTACLE_ID     INTEGER                PRIMARY KEY AUTOINCREMENT NOT NULL," +
                                 " THEME            INT                NOT NULL, " + 
+                                " NUMERO           INT                NOT NULL, " + 
                                 " NOM              TEXT               NOT NULL, " + 
                                 " DESCRIPTION      TEXT               NOT NULL, " + 
                                 " FOREIGN KEY(THEME) REFERENCES THEME(THEME_ID)  " +
@@ -119,7 +120,7 @@ public class DatabaseManager {
     
     public void createSalleTable() {
         String userTable =  "CREATE TABLE IF NOT EXISTS SALLE (" +
-                                " SALLE_ID     INTEGER                PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                                " SALLE_ID     INTEGER            PRIMARY KEY AUTOINCREMENT NOT NULL," +
                                 " NOM          TEXT               NOT NULL " + 
                             ")"; 
         try {
@@ -297,13 +298,37 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
-    public void insertSpectacle(Spectacle spectacle){
+    public void insertTheme(Theme theme){
         try {
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO SPECTACLE (NOM, DESCRIPTION) VALUES(?,?)");
-
+                    .prepareStatement("INSERT INTO THEME (NOM) VALUES(?)");
+            preparedStatement.setString(1, theme.getNom());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    public void insertSpectacle(Spectacle spectacle){
+        
+        // Finding the id theme
+        int theme_id = 0;
+        try {
+            ResultSet resultSet = statement.executeQuery("SELECT THEME_ID FROM THEME WHERE NOM = '"+ spectacle.getTheme().getNom() + "'");
+            theme_id = resultSet.getInt("THEME_ID");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        // Inserting the SPECTACLE with his relation with the THEME theme_id
+        try {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("INSERT INTO SPECTACLE (THEME, NUMERO, NOM, DESCRIPTION) VALUES(?,?,?,?)");
+            preparedStatement.setInt(1, theme_id);
+            preparedStatement.setInt(2, spectacle.getNumero());
+            preparedStatement.setString(3, spectacle.getNom());
+            preparedStatement.setString(4, spectacle.getDescription());
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
