@@ -4,10 +4,7 @@
  * and open the template in the editor.
  */
 package database;
-import java.sql.*;
-import modele.Client;
-import modele.Spectacle;
-import modele.Theme;
+import modele.*;
 /**
  *
  * @author benkh_000
@@ -46,7 +43,24 @@ public class Test_BDD {
         DatabaseManager.getDatabaseManager().insertTheme(theme);
         DatabaseManager.getDatabaseManager().insertSpectacle(spectacle);
     }
+    public void testSalle(){
+        Salle salle = new Salle("H104");
+        DatabaseManager.getDatabaseManager().insertSalle(salle);
+
+        salle = new Salle("Resto etudiant");
+        DatabaseManager.getDatabaseManager().insertSalle(salle);
+
+        salle = new Salle("Tram B");
+        DatabaseManager.getDatabaseManager().insertSalle(salle);
+    }
     
+    public void testPlace(){
+        CategoriePlaces categorie = new CategoriePlaces("assis par terre", 0.5);
+        Spectacle spectacle = new Spectacle(1, "Comment carresser l animal", "Demonstration de carressage avancé de ces animaux magiques", theme);
+        
+        DatabaseManager.getDatabaseManager().insertTheme(theme);
+        DatabaseManager.getDatabaseManager().insertSpectacle(spectacle);
+    }
     public void terminateBDD(){
         DatabaseManager.getDatabaseManager().dropAllTable();
         DatabaseManager.getDatabaseManager().close();

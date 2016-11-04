@@ -2,9 +2,9 @@ package modele;
 
 public class CategoriePlaces {
     private String nom;
-    private int tarif;
+    private float tarif;
 
-    public CategoriePlaces(String nom, int tarif) {
+    public CategoriePlaces(String nom, float tarif) {
         this.nom = nom;
         this.tarif = tarif;
     }
@@ -13,7 +13,7 @@ public class CategoriePlaces {
         return nom;
     }
 
-    public int getTarif() {
+    public float getTarif() {
         return tarif;
     }
 }

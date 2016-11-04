@@ -309,6 +309,31 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+    public void insertSalle(Salle salle){
+        try {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("INSERT INTO Salle (NOM) VALUES(?)");
+            preparedStatement.setString(1, salle.getNom());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    public void insertCategorie(CategoriePlaces categorie){
+        try {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("INSERT INTO Salle (NOM, TARIF) VALUES(?,?)");
+            preparedStatement.setString(1, categorie.getNom());
+            preparedStatement.setInt(2, categorie.getTarif());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
+    
     public void insertSpectacle(Spectacle spectacle){
         
         // Finding the id theme
@@ -328,6 +353,43 @@ public class DatabaseManager {
             preparedStatement.setInt(2, spectacle.getNumero());
             preparedStatement.setString(3, spectacle.getNom());
             preparedStatement.setString(4, spectacle.getDescription());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void insertRepresentation(Representation representation){
+        
+        // Finding the id spectacle
+        int spectacle_id = 0;
+        try {
+            ResultSet resultSet = statement.executeQuery("SELECT SPECTACLE_ID FROM SPECTACLE WHERE NUMERO = "+ representation.getSpectacle().getNumero());
+            spectacle_id = resultSet.getInt("SPECTACLE_ID");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        // Finding the id salle
+        int salle_id = 0;
+        try {
+            ResultSet resultSet = statement.executeQuery("SELECT SALLE_ID FROM SALLE WHERE NOM = '"+ representation.getSalle().getNom()+ "'");
+            salle_id = resultSet.getInt("SALLE_ID");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        // Inserting the REPRESENTATION with his relation with the SPECTALCE spectacle_id and the SALLE salle_id
+        try {
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("INSERT INTO SPECTACLE (SPECTACLE, SALLE, DATE, HEURE) VALUES(?,?,?,?)");
+            preparedStatement.setInt(1, spectacle_id);
+            preparedStatement.setInt(2, salle_id);
+            preparedStatement.setString(3, ""   + representation.getDate().getYear() + "-" 
+                                                + representation.getDate().getMonth() + "-" 
+                                                + representation.getDate().getDay());  //// as ISO8601 strings ("YYYY-MM-DD").
+            preparedStatement.setInt(4, representation.getHeure());
+            preparedStatement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
