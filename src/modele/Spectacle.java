@@ -2,7 +2,7 @@ package modele;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Date;
+import java.sql.Date;
 
 public class Spectacle {
 
@@ -18,6 +18,10 @@ public class Spectacle {
         this.description = description;
         this.theme = theme;
         this.representations = new ArrayList<Representation>();
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
     }
 
     public int getNumero() {

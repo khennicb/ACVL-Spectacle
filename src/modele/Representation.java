@@ -1,9 +1,10 @@
 package modele;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 
 public class Representation implements FactoryVendeur {
+    private int numero;
     private Date date;
     // utilite d'heure si date ?
     private int heure;
@@ -21,8 +22,16 @@ public class Representation implements FactoryVendeur {
         // this.reservations = new ArrayList<Reservation>();
     }
 
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
     public Date getDate() {
         return date;
+    }
+
+    public int getNumero() {
+        return numero;
     }
 
     public int getHeure() {

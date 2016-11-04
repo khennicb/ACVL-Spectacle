@@ -165,7 +165,7 @@ public class DatabaseManager {
                                 " PLACE_ID           INTEGER                PRIMARY KEY AUTOINCREMENT NOT NULL," +
                                 " SALLE              INT                NOT NULL, " + 
                                 " CATEGORIE          INT                NOT NULL, " +   
-                                " NOMERO_DE_RANG     INT                NOT NULL, " + 
+                                " NUMERO_DE_RANG     INT                NOT NULL, " + 
                                 " PLACE_DANS_LE_RANG INT                NOT NULL, " +
                                 " FOREIGN KEY(SALLE)      REFERENCES SALLE(SALLE_ID), " +
                                 " FOREIGN KEY(CATEGORIE)  REFERENCES CATEGORIE(CATEGORIE_ID)  " +
@@ -181,7 +181,7 @@ public class DatabaseManager {
         String userTable =  "CREATE TABLE IF NOT EXISTS PLACE_OCCUPE (" +
                                 " PLACE              INT                NOT NULL," +
                                 " REPRESENTATION     INT                NOT NULL," + 
-                                " DOSSIER            INT                NOT NULL, " +   
+                                " DOSSIER            INT                , " +   
                                 " PROPRIETAIRE       INT                NOT NULL, " + 
                                 " ACHETE             INT(1)             NOT NULL, " +
                                 " FOREIGN KEY(REPRESENTATION)  REFERENCES REPRESENTATION(REPRESENTATION_ID),  " +
@@ -274,8 +274,11 @@ public class DatabaseManager {
     
     public void insertUtilisateur(Utilisateur utilisateur){
         try {
+                
+            int key = 0;
+
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO UTILISATEUR (LOGIN, PASSWORD, TYPE_UTILISATEUR, NOM, PRENOM, MAIL) VALUES(?,?,?,?,?,?)");
+                    .prepareStatement("INSERT INTO UTILISATEUR (LOGIN, PASSWORD, TYPE_UTILISATEUR, NOM, PRENOM, MAIL) VALUES(?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, utilisateur.getLogin());
             preparedStatement.setString(2, utilisateur.getPassword());
             
@@ -294,46 +297,47 @@ public class DatabaseManager {
             }
             
             preparedStatement.executeUpdate();
+                    
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            
+            if (rs != null && rs.next()) {
+                key = (int)rs.getLong(1);
+            }
+            
+            utilisateur.setNumero(key);
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+    
+    
     public void insertTheme(Theme theme){
         try {
+            
+            int key = 0;
+            
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO THEME (NOM) VALUES(?)");
+                    .prepareStatement("INSERT INTO THEME (NOM) VALUES(?)", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, theme.getNom());
             preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-    public void insertSalle(Salle salle){
-        try {
-            PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO Salle (NOM) VALUES(?)");
-            preparedStatement.setString(1, salle.getNom());
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-    public void insertCategorie(CategoriePlaces categorie){
-        try {
-            PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO Salle (NOM, TARIF) VALUES(?,?)");
-            preparedStatement.setString(1, categorie.getNom());
-            preparedStatement.setInt(2, categorie.getTarif());
-            preparedStatement.executeUpdate();
+        
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            
+            if (rs != null && rs.next()) {
+                key = (int)rs.getLong(1);
+            }
+            
+            theme.setNumero(key);
+
+        
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
     
-    
+
     public void insertSpectacle(Spectacle spectacle){
         
         // Finding the id theme
@@ -347,50 +351,164 @@ public class DatabaseManager {
         
         // Inserting the SPECTACLE with his relation with the THEME theme_id
         try {
+            int key = 0;
+            
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO SPECTACLE (THEME, NUMERO, NOM, DESCRIPTION) VALUES(?,?,?,?)");
+                    .prepareStatement("INSERT INTO SPECTACLE (THEME, NUMERO, NOM, DESCRIPTION) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, theme_id);
             preparedStatement.setInt(2, spectacle.getNumero());
             preparedStatement.setString(3, spectacle.getNom());
             preparedStatement.setString(4, spectacle.getDescription());
-            preparedStatement.executeUpdate();
+            
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            
+            if (rs != null && rs.next()) {
+                key = (int)rs.getLong(1);
+            }
+            
+            spectacle.setNumero(key);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void insertRepresentation(Representation representation){
+        
+        
+        // Inserting the SPECTACLE with his relation with the THEME theme_id
+        try {
+            int key = 0;
+            
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("INSERT INTO REPRESENTATION (SPECTACLE, SALLE, DATE, HEURE) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, representation.getSpectacle().getNumero());
+            preparedStatement.setInt(2, representation.getSalle().getNumero());
+            
+            String date = "" + representation.getDate().getYear()+ "-" + representation.getDate().getMonth()+ "-" +representation.getDate().getDay() ;
+            
+            preparedStatement.setString(3, date);  // as ISO8601 strings ("YYYY-MM-DD").
+            preparedStatement.setInt(4, representation.getHeure());
+            
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            if (rs != null && rs.next()) {
+                key = (int)rs.getLong(1);
+            }            
+            representation.setNumero(key);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
     
-    public void insertRepresentation(Representation representation){
+
+    public void insertSalle(Salle salle){
         
-        // Finding the id spectacle
-        int spectacle_id = 0;
         try {
-            ResultSet resultSet = statement.executeQuery("SELECT SPECTACLE_ID FROM SPECTACLE WHERE NUMERO = "+ representation.getSpectacle().getNumero());
-            spectacle_id = resultSet.getInt("SPECTACLE_ID");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        // Finding the id salle
-        int salle_id = 0;
-        try {
-            ResultSet resultSet = statement.executeQuery("SELECT SALLE_ID FROM SALLE WHERE NOM = '"+ representation.getSalle().getNom()+ "'");
-            salle_id = resultSet.getInt("SALLE_ID");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        // Inserting the REPRESENTATION with his relation with the SPECTALCE spectacle_id and the SALLE salle_id
-        try {
+            int key = 0;
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO SPECTACLE (SPECTACLE, SALLE, DATE, HEURE) VALUES(?,?,?,?)");
-            preparedStatement.setInt(1, spectacle_id);
-            preparedStatement.setInt(2, salle_id);
-            preparedStatement.setString(3, ""   + representation.getDate().getYear() + "-" 
-                                                + representation.getDate().getMonth() + "-" 
-                                                + representation.getDate().getDay());  //// as ISO8601 strings ("YYYY-MM-DD").
-            preparedStatement.setInt(4, representation.getHeure());
+                    .prepareStatement("INSERT INTO SALLE (NOM) VALUES(?)", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, salle.getNom());
             preparedStatement.executeUpdate();
+            
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            
+            if (rs != null && rs.next()) {
+                key = (int)rs.getLong(1);
+            }
+            salle.setNumero(key);
         } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    
+    public void insertCategoriePlaces(CategoriePlaces categoriePlace){
+        
+        try {
+            int key = 0;
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("INSERT INTO CATEGORIE (NOM, TARIF) VALUES(?,?)", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, categoriePlace.getNom());
+            preparedStatement.setInt(2, categoriePlace.getNumero());
+            
+            preparedStatement.executeUpdate();
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            
+            if (rs != null && rs.next()) {
+                key = (int)rs.getLong(1);
+            }
+            categoriePlace.setNumero(key);
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    public void insertPlace(Place place){
+        
+        try {
+            int key = 0;
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("INSERT INTO PLACE (SALLE, CATEGORIE, NUMERO_DE_RANG, PLACE_DANS_LE_RANG) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, place.getSalle().getNumero());
+            preparedStatement.setInt(2, place.getCategorie().getNumero());
+            preparedStatement.setInt(3, place.getNumeroRang());
+            preparedStatement.setInt(4, place.getPlaceRang());
+            
+            preparedStatement.executeUpdate();
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            
+            if (rs != null && rs.next()) {
+                key = (int)rs.getLong(1);
+            }
+            
+            place.setNumero(key);
+            
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+    
+    public void insertPlaceOccupe(SiegeOccupe siegeOccupe){
+        
+        int representation_id;
+        int dossier_id;
+        int place_id;
+        int utilisateur_id;
+        if(siegeOccupe instanceof Billet) {
+            representation_id = ((Billet)siegeOccupe).getRepresentation().getNumero();
+            dossier_id = ((Billet)siegeOccupe).getDossier().getNumero();
+            place_id = ((Billet)siegeOccupe).getPlace().getNumero();
+            utilisateur_id = ((Billet)siegeOccupe).getDossier().getClient().getNumero();
+        } else {
+            representation_id = ((Reservation)siegeOccupe).getRepresentation().getNumero();
+            dossier_id = 0;
+            place_id = ((Reservation)siegeOccupe).getPlace().getNumero();
+            utilisateur_id = ((Reservation)siegeOccupe).getClient().getNumero();
+        }
+        
+        try {
+            int key = 0;
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("INSERT INTO PLACE_OCCUPE (REPRESENTATION, PLACE, DOSSIER, UTILISATEUR) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, representation_id);
+            preparedStatement.setInt(2, dossier_id);
+            preparedStatement.setInt(3, place_id);
+            preparedStatement.setInt(4, utilisateur_id);
+
+            preparedStatement.executeUpdate();
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+
+            siegeOccupe.setNumero(key);
+
+            if (rs != null && rs.next()) {
+                key = (int)rs.getLong(1);
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

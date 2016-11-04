@@ -1,7 +1,7 @@
 package modele;
 
 public class Place {
-
+    private int numero;
     private int numeroRang;
     private int placeRang;
     private CategoriePlaces categorie;
@@ -16,6 +16,14 @@ public class Place {
 
     public int getNumeroRang() {
         return numeroRang;
+    }
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
     }
 
     public int getPlaceRang() {
