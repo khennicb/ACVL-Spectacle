@@ -2,6 +2,7 @@ package modele;
 
 public abstract class Utilisateur {
 
+    protected int numero;
     protected String login;
     protected String password;
 
@@ -10,6 +11,15 @@ public abstract class Utilisateur {
         this.password = password;
     }
 
+    public void setNumero(int numero) {
+        this.numero = numero;
+    }
+
+
+    public int getNumero() {
+        return numero;
+    }
+    
     public String getLogin() {
         return login;
     }

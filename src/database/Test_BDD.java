@@ -5,7 +5,11 @@
  */
 package database;
 import java.sql.*;
+import modele.CategoriePlaces;
 import modele.Client;
+import modele.Place;
+import modele.Representation;
+import modele.Salle;
 import modele.Spectacle;
 import modele.Theme;
 /**
@@ -20,11 +24,16 @@ public class Test_BDD {
     public static void main(String[] args) {
         
         Test_BDD test_BDD = new Test_BDD();
+
         test_BDD.initializeBDD();
         
         test_BDD.testClient();
 
         test_BDD.testSpectacle();
+        
+        test_BDD.testSalle();
+        
+        test_BDD.testPlace();
 
         test_BDD.terminateBDD();
     }
@@ -45,6 +54,35 @@ public class Test_BDD {
         
         DatabaseManager.getDatabaseManager().insertTheme(theme);
         DatabaseManager.getDatabaseManager().insertSpectacle(spectacle);
+    }
+    
+    public void testSalle(){
+        Salle salle = new Salle("salle 1");
+        
+        DatabaseManager.getDatabaseManager().insertSalle(salle);
+    }
+    
+    public void testPlace(){
+        Salle salle = new Salle("salle 1");
+        CategoriePlaces categorie = new CategoriePlaces("Elite", 1000);
+        Place place = new Place(1, 1, categorie, salle);
+        
+        DatabaseManager.getDatabaseManager().insertSalle(salle);
+        DatabaseManager.getDatabaseManager().insertPlace(place);
+    }
+    
+    
+    public void testRepresentation(){
+        Theme theme = new Theme("Sauvetage des licornes");
+        Spectacle spectacle = new Spectacle(1, "Comment carresser l animal", "Demonstration de carressage avancé de ces animaux magiques", theme);
+        Salle salle = new Salle("salle 1");
+        spectacle.addRepresentation(new java.sql.Date(2016, 01,20), 0, salle);
+        Representation rep = spectacle.getAllRepresentations().get(0);
+        
+        DatabaseManager.getDatabaseManager().insertTheme(theme);
+        DatabaseManager.getDatabaseManager().insertSpectacle(spectacle);
+        DatabaseManager.getDatabaseManager().insertSalle(salle);
+        DatabaseManager.getDatabaseManager().insertRepresentation(rep);
     }
     
     public void terminateBDD(){

@@ -1,7 +1,6 @@
 package modele;
 
 public class Billet extends SiegeOccupe {
-    private int numero;
     private Dossier dossier;
     private Representation representation;
 
@@ -10,10 +9,6 @@ public class Billet extends SiegeOccupe {
         this.numero = numero;
         this.dossier = dossier;
         this.representation = representation;
-    }
-
-    public int getNumero() {
-        return numero;
     }
 
     public Dossier getDossier() {
