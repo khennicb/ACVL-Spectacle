@@ -45,7 +45,7 @@ public class Test_BDD {
     }
     
     public void testClient(){
-        Client client = new Client("login", "mdp", "Bernard", "Dinoumouk", "totodu38@tes_pa_bo.fr");
+        Client client = new Client("login", "mdp", "Bernard", "ria", "totodu38@tes_pa_bo.fr");
         DatabaseManager.getDatabaseManager().insertUtilisateur(client);
     }
     public void testSpectacle(){
