@@ -2,6 +2,7 @@ package vue.Center;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -24,17 +25,27 @@ public class PanelCenterConnexion extends PanelCenter {
 	private JButton btnConnexion;
 	private JButton btnInscription;
 	
+	private JLabel lblWarningConnexion;
+	private JLabel lblWarningInscription;
+	
 	public PanelCenterConnexion() {		
 		JPanel panel_connexion = new JPanel();
 		this.panel.add(panel_connexion);
 		panel_connexion.setLayout(new BorderLayout(0, 0));
 		
+		
 		JPanel panel_connexion_titre = new JPanel();
 		panel_connexion.add(panel_connexion_titre, BorderLayout.NORTH);
+		panel_connexion_titre.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		JLabel lblConnexion = new JLabel("Connexion");
+		lblConnexion.setHorizontalAlignment(SwingConstants.CENTER);
 		lblConnexion.setFont(new Font("Arial", Font.PLAIN, 16));
 		panel_connexion_titre.add(lblConnexion);
+		
+		lblWarningConnexion = new JLabel("");
+		lblWarningConnexion.setFont(new Font("Arial", Font.PLAIN, 14));
+		panel_connexion_titre.add(lblWarningConnexion);
 		
 		JPanel panel_connexion_center = new JPanel();
 		panel_connexion.add(panel_connexion_center, BorderLayout.CENTER);
@@ -43,23 +54,23 @@ public class PanelCenterConnexion extends PanelCenter {
 		JLabel lblLogin = new JLabel("Login:");
 		lblLogin.setHorizontalAlignment(SwingConstants.CENTER);
 		lblLogin.setFont(new Font("Arial", Font.PLAIN, 12));
-		panel_connexion_center.add(lblLogin, "cell 0 0");
+		panel_connexion_center.add(lblLogin, "cell 0 1");
 		
 		textField_connexion_login = new JTextField();
 		lblLogin.setLabelFor(textField_connexion_login);
-		panel_connexion_center.add(textField_connexion_login, "cell 1 0,growx");
+		panel_connexion_center.add(textField_connexion_login, "cell 1 1,growx");
 		textField_connexion_login.setColumns(10);
 		
 		JLabel lblMotDePasse = new JLabel("Mot de passe:");
 		lblMotDePasse.setFont(new Font("Arial", Font.PLAIN, 12));
-		panel_connexion_center.add(lblMotDePasse, "cell 0 1,aligny center");
+		panel_connexion_center.add(lblMotDePasse, "cell 0 2,aligny center");
 		
 		passwordField_connexion_mdp = new JPasswordField();
 		lblMotDePasse.setLabelFor(passwordField_connexion_mdp);
-		panel_connexion_center.add(passwordField_connexion_mdp, "cell 1 1,growx,aligny center");
+		panel_connexion_center.add(passwordField_connexion_mdp, "cell 1 2,growx,aligny center");
 		
 		btnConnexion = new JButton("Valider");
-		panel_connexion_center.add(btnConnexion, "cell 1 2");
+		panel_connexion_center.add(btnConnexion, "cell 1 3");
 		
 		JPanel panel_inscription = new JPanel();
 		this.panel.add(panel_inscription);
@@ -67,10 +78,15 @@ public class PanelCenterConnexion extends PanelCenter {
 		
 		JPanel panel_inscription_titre = new JPanel();
 		panel_inscription.add(panel_inscription_titre, BorderLayout.NORTH);
+		panel_inscription_titre.setLayout(new GridLayout(2, 1, 0, 0));
 		
-		JLabel lblNewLabel_1 = new JLabel("Insciption");
-		lblNewLabel_1.setFont(new Font("Arial", Font.PLAIN, 16));
-		panel_inscription_titre.add(lblNewLabel_1);
+		JLabel lblInscription = new JLabel("Insciption");
+		lblInscription.setHorizontalAlignment(SwingConstants.CENTER);
+		lblInscription.setFont(new Font("Arial", Font.PLAIN, 16));
+		panel_inscription_titre.add(lblInscription);
+		
+		lblWarningInscription = new JLabel("");
+		panel_inscription_titre.add(lblWarningInscription);
 		
 		JPanel panel_inscription_center = new JPanel();
 		panel_inscription.add(panel_inscription_center, BorderLayout.CENTER);
@@ -130,5 +146,55 @@ public class PanelCenterConnexion extends PanelCenter {
 		
 		btnInscription = new JButton("Valider");
 		panel_inscription_center.add(btnInscription, "cell 1 6");
+	}
+
+	public JTextField getTextField_connexion_login() {
+		return textField_connexion_login;
+	}
+
+	public JPasswordField getPasswordField_connexion_mdp() {
+		return passwordField_connexion_mdp;
+	}
+
+	public JTextField getTextField_inscription_Nom() {
+		return textField_inscription_Nom;
+	}
+
+	public JTextField getTextField_inscription_prenom() {
+		return textField_inscription_prenom;
+	}
+
+	public JTextField getTextField_inscription_email() {
+		return textField_inscription_email;
+	}
+
+	public JTextField getTextField_inscription_login() {
+		return textField_inscription_login;
+	}
+
+	public JPasswordField getPasswordField_inscription_mdp() {
+		return passwordField_inscription_mdp;
+	}
+
+	public JPasswordField getPasswordField_inscription_confirm_mdp() {
+		return passwordField_inscription_confirm_mdp;
+	}
+
+	public JButton getBtnConnexion() {
+		return btnConnexion;
+	}
+
+	public JButton getBtnInscription() {
+		return btnInscription;
+	}
+	
+	public void setWarningConnexion(String msg){
+		this.lblWarningConnexion.setText(msg);
+		this.lblWarningInscription.setText("");
+	}
+	
+	public void setWarningInscription(String msg) {
+		this.lblWarningInscription.setText(msg);
+		this.lblWarningConnexion.setText("");
 	}
 }

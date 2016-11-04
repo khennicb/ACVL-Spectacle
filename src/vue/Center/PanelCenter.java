@@ -11,6 +11,7 @@ public class PanelCenter extends AbstractPanel {
 	protected JPanel panel_titre;
 	protected JPanel panel_content;
 	
+	
 	protected void init(){
 		panel_titre = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel_titre.getLayout();
