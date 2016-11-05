@@ -9,18 +9,17 @@ import javax.swing.JFrame;
 import vue.Header.*;
 import vue.Center.*;
 
-public class FenetrePrincipale {
+public class FenetrePrincipale extends Fenetre {
 	private JFrame frame;
 	private PanelHeader header;
-	private PanelCenter center;
+	
 	
 	/**
 	 * Create the application.
 	 */
 	public FenetrePrincipale(PanelHeader header, PanelCenter center) {
-		this.header = header;
-		this.center = center;
-		
+		super(center);
+		this.header = header;		
 		initialize();
 	}
 	
@@ -28,20 +27,12 @@ public class FenetrePrincipale {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() { 
-		frame = new JFrame();
 		frame.setBounds(100, 100, 680, 566);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		frame.getContentPane().add(this.header.getPanel(), BorderLayout.NORTH);
 		frame.getContentPane().add(this.center.getPanel(), BorderLayout.CENTER);
 		this.center.getPanel().setLayout(new GridLayout(1, 0, 0, 0));
 	}
-	
-	public void show(){
-		this.frame.setVisible(true);
-	}
-	
-	
 	
 	
 	public PanelHeader getHeader() {
@@ -54,17 +45,7 @@ public class FenetrePrincipale {
 		frame.getContentPane().add(this.header.getPanel(), BorderLayout.NORTH);
 	}
 
-	public PanelCenter getCenter() {
-		return center;
-	}
-
-	public void setCenter(PanelCenter center) {
-		frame.getContentPane().remove(this.center.getPanel());
-		this.center = center;
-		frame.getContentPane().add(this.center.getPanel(), BorderLayout.CENTER);
-		this.center.getPanel().setLayout(new GridLayout(1, 0, 0, 0));
-	}
-
+	
 	public static void main (String [] args) {
 		final String [] tab = {"test"};
 		EventQueue.invokeLater(new Runnable() {
