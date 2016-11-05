@@ -59,6 +59,8 @@ public class Test_BDD {
         System.out.println("Client id = " + client.getNumero());
         DatabaseManager.getDatabaseManager().insertUtilisateur(client);
         System.out.println("Client id = " + client.getNumero());
+        client = (Client) DatabaseManager.getDatabaseManager().selectUtilisateur(client.getLogin(), client.getPassword());
+        System.out.println("numero="+ client.getNumero() + " login="+ client.getLogin() + " mdp=" + client.getPassword() + " nom=" + client.getNom() + " email=" + client.getMail());
 
     }
     public void testSpectacle(){

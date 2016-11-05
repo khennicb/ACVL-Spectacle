@@ -78,7 +78,7 @@ public class DatabaseManager {
         String userTable =  "CREATE TABLE IF NOT EXISTS UTILISATEUR (" +
                                 " UTILISATEUR_ID   INTEGER            PRIMARY KEY AUTOINCREMENT ," +
                                 " LOGIN            TEXT               NOT NULL, " + 
-                                " Password         INT                NOT NULL, " + 
+                                " Password         TEXT                NOT NULL, " + 
                                 " TYPE_UTILISATEUR INT                NOT NULL, " + 
                                 " NOM              TEXT               NOT NULL, " + 
                                 " PRENOM           TEXT               NOT NULL, " + 
@@ -532,6 +532,30 @@ public void insertDossier(Dossier dossier){
         }
     }
     
+    
+    public Utilisateur selectUtilisateur(String login, String password){
+        Utilisateur utilisateur = null;
+        
+        try {
+            ResultSet rs = statement.executeQuery( "SELECT * FROM UTILISATEUR WHERE LOGIN=\"" + login + "\" AND PASSWORD=\"" + password + "\" ;" );
+            while ( rs.next() ) {
+                if(rs.getInt("TYPE_UTILISATEUR") == 0) {
+                    // L'utilisateur est un client
+                    Client client  = new Client(login, password, rs.getString("NOM"), rs.getString("PRENOM"), rs.getString("MAIL"));
+                    utilisateur = client;
+                } else {
+                    // L'utilisateur est le Responsable de la programmation
+                    ResponsableProgrammation responsable  = new ResponsableProgrammation(login, password);
+                    utilisateur = responsable;
+                }
+                utilisateur.setNumero(rs.getInt("UTILISATEUR_ID"));
+            }
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return utilisateur;
+    }
     
     public Theme selectTheme(int theme_id){
         Theme theme = null;
