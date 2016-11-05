@@ -26,7 +26,8 @@ import vue.Header.*;
  * @author noon
  */
 public class ControleurPrincipal {
-    private FenetrePrincipale vue;
+    
+	private FenetrePrincipale vue;
     private ControleurUtilisateur userControleur;
     private DatabaseManager dm;
     
@@ -35,16 +36,19 @@ public class ControleurPrincipal {
     	dm.connect();
     	dm.createTables();
     	
+    	vue = new FenetrePrincipale(new PanelHeaderConnexion(), new PanelCenterConnexion() );
+    	
     	EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					vue = new FenetrePrincipale(new PanelHeaderConnexion(), new PanelCenterConnexion() );
 					vue.show();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
+    	
+    	System.out.println(((PanelCenterConnexion)(vue.getCenter())));
     	
     	((PanelCenterConnexion)(vue.getCenter())).getBtnConnexion().addActionListener(new ActionListener() {
 			@Override
@@ -60,11 +64,12 @@ public class ControleurPrincipal {
 					}
 				} catch (UnsupportedEncodingException
 						| NoSuchAlgorithmException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			}
 		});
+    	
+    	ControleurPrincipal cp = this;
     	
     	((PanelCenterConnexion)(vue.getCenter())).getBtnInscription().addActionListener(new ActionListener() {
 			@Override
@@ -73,9 +78,32 @@ public class ControleurPrincipal {
 				String email = ((PanelCenterConnexion)(vue.getCenter())).getTextField_inscription_email().getText();
 				String nom = ((PanelCenterConnexion)(vue.getCenter())).getTextField_inscription_Nom().getText();
 				String prenom = ((PanelCenterConnexion)(vue.getCenter())).getTextField_inscription_prenom().getText();
+				@SuppressWarnings("deprecation")
 				String motDePasse = ((PanelCenterConnexion)(vue.getCenter())).getPasswordField_inscription_mdp().getText();
+				@SuppressWarnings("deprecation")
 				String motDePasseConfirm = ((PanelCenterConnexion)(vue.getCenter())).getPasswordField_inscription_confirm_mdp().getText();
-				//TODO inscription
+				//inscription
+				if(!login.isEmpty() && !nom.isEmpty() && !email.isEmpty() && !prenom.isEmpty() && !motDePasse.isEmpty()) {
+					if(motDePasse.equals(motDePasseConfirm)) {
+						try {
+							MessageDigest md = MessageDigest.getInstance("MD5");
+					    	byte[] mdpCrypte = md.digest(motDePasse.getBytes("UTF-8"));
+							Utilisateur utilisateur = new Client(login, mdpCrypte.toString(), nom, prenom, email);
+							dm.insertUtilisateur(utilisateur);
+							userControleur = ControleurClient.instance();
+				    		userControleur.setUtilisateurCourant(utilisateur);
+				    		userControleur.setControleurPrincipal(cp);
+				    		userControleur.loadHome();
+						} catch (UnsupportedEncodingException
+								| NoSuchAlgorithmException e1) {
+							e1.printStackTrace();
+						}
+					} else {
+						((PanelCenterConnexion)(vue.getCenter())).setWarningInscription("Les deux mots de passe sont différents");
+					}
+				} else {
+					((PanelCenterConnexion)(vue.getCenter())).setWarningInscription("Tous les champs doivent être renseignés");
+				}
 				
 			}
 		});
@@ -126,10 +154,22 @@ public class ControleurPrincipal {
     		userControleur.setUtilisateurCourant(utilisateur);
     	}
     	
+    	userControleur.setControleurPrincipal(this);
     	return true;
     	
     }
     
-    
+    public FenetrePrincipale getVue() {
+		return vue;
+	}
+
+	public DatabaseManager getDatabaseManager() {
+		return dm;
+	}
+	
+	
+	public static void main(String [] args) {
+		ControleurPrincipal resaSpectacle = new ControleurPrincipal();
+	}
     
 }

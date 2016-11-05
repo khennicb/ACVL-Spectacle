@@ -3,6 +3,8 @@ package vue;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 
@@ -10,7 +12,6 @@ import vue.Header.*;
 import vue.Center.*;
 
 public class FenetrePrincipale extends Fenetre {
-	private JFrame frame;
 	private PanelHeader header;
 	
 	
@@ -28,6 +29,7 @@ public class FenetrePrincipale extends Fenetre {
 	 */
 	private void initialize() { 
 		frame.setBounds(100, 100, 680, 566);
+		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(this.header.getPanel(), BorderLayout.NORTH);
 		frame.getContentPane().add(this.center.getPanel(), BorderLayout.CENTER);
@@ -43,6 +45,7 @@ public class FenetrePrincipale extends Fenetre {
 		frame.getContentPane().remove(this.header.getPanel());
 		this.header = header;
 		frame.getContentPane().add(this.header.getPanel(), BorderLayout.NORTH);
+		this.show();
 	}
 
 	
@@ -57,7 +60,13 @@ public class FenetrePrincipale extends Fenetre {
 					PanelCenter test = new PanelCenterConnexion();
 					((PanelCenterConnexion)test).setWarningConnexion("Mot de passe ou login incorrecte");
 					window.setCenter(test);
-					window.setHeader(new PanelHeaderUser());
+					((PanelCenterConnexion)window.getCenter()).getBtnConnexion().addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							window.setHeader(new PanelHeaderUser());
+						}
+					});
+					//window.setHeader(new PanelHeaderUser());
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
