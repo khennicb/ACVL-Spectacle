@@ -66,7 +66,7 @@ public class FenetrePrincipale {
 	}
 
 	public static void main (String [] args) {
-		String [] tab = {"test"};
+		final String [] tab = {"test"};
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

@@ -5,6 +5,7 @@
  */
 package database;
 import java.sql.*;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modele.*;
@@ -106,7 +107,6 @@ public class DatabaseManager {
         String userTable =  "CREATE TABLE IF NOT EXISTS SPECTACLE (" +
                                 " SPECTACLE_ID     INTEGER                PRIMARY KEY AUTOINCREMENT NOT NULL," +
                                 " THEME            INT                NOT NULL, " + 
-                                " NUMERO           INT                NOT NULL, " + 
                                 " NOM              TEXT               NOT NULL, " + 
                                 " DESCRIPTION      TEXT               NOT NULL, " + 
                                 " FOREIGN KEY(THEME) REFERENCES THEME(THEME_ID)  " +
@@ -340,25 +340,15 @@ public class DatabaseManager {
 
     public void insertSpectacle(Spectacle spectacle){
         
-        // Finding the id theme
-        int theme_id = 0;
-        try {
-            ResultSet resultSet = statement.executeQuery("SELECT THEME_ID FROM THEME WHERE NOM = '"+ spectacle.getTheme().getNom() + "'");
-            theme_id = resultSet.getInt("THEME_ID");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        
-        // Inserting the SPECTACLE with his relation with the THEME theme_id
         try {
             int key = 0;
             
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO SPECTACLE (THEME, NUMERO, NOM, DESCRIPTION) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, theme_id);
-            preparedStatement.setInt(2, spectacle.getNumero());
-            preparedStatement.setString(3, spectacle.getNom());
-            preparedStatement.setString(4, spectacle.getDescription());
+                    .prepareStatement("INSERT INTO SPECTACLE (THEME, NOM, DESCRIPTION) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setInt(1, spectacle.getTheme().getNumero());
+            preparedStatement.setString(2, spectacle.getNom());
+            preparedStatement.setString(3, spectacle.getDescription());
+            preparedStatement.executeUpdate();
             
             ResultSet rs = preparedStatement.getGeneratedKeys();
             
@@ -389,6 +379,7 @@ public class DatabaseManager {
             
             preparedStatement.setString(3, date);  // as ISO8601 strings ("YYYY-MM-DD").
             preparedStatement.setInt(4, representation.getHeure());
+            preparedStatement.executeUpdate();
             
             ResultSet rs = preparedStatement.getGeneratedKeys();
             if (rs != null && rs.next()) {
@@ -513,6 +504,116 @@ public class DatabaseManager {
         }
     }
     
+    
+    public Theme selectTheme(int theme_id){
+        Theme theme = null;
+        
+        try {
+            ResultSet rs = statement.executeQuery( "SELECT * FROM THEME WHERE THEME_ID=" + theme_id + ";" );
+            while ( rs.next() ) {
+                theme  = new Theme(rs.getString("nom"));
+                theme.setNumero(theme_id);
+            }
+        
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return theme;
+        
+    }
+    
+    public Salle selectSalle(int salle_id){
+        Salle salle = null;
+        
+        try {
+            ResultSet rs = statement.executeQuery( "SELECT * FROM Salle WHERE SALLE_ID=" + salle_id + ";" );
+            while ( rs.next() ) {
+                salle = new Salle(rs.getString("nom"));
+                salle.setNumero(salle_id);
+            }
+        
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return salle;
+    }
+    
+    public Spectacle selectSpectacle(int spectacle_id){
+        Spectacle spectacle = null;
+        
+        try {
+            ResultSet rs = statement.executeQuery( "SELECT * FROM Salle WHERE SPECTACLE_ID=" + spectacle_id + ";" );
+            while ( rs.next() ) {
+                spectacle = new Spectacle(rs.getInt("SPECTACLE_ID"), rs.getString("NOM"), rs.getString("DESCRIPTION"), selectTheme(rs.getInt("THEME")));
+                spectacle.setNumero(spectacle_id);
+            }
+        
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return spectacle;
+    }
+    
+    
+    public Vector<Spectacle> selectAllSpectacle(){
+        Vector<Spectacle> vector = new Vector<>();
+        
+        try {
+            ResultSet rs = statement.executeQuery( "SELECT * FROM SPECTACLE;" );
+            while ( rs.next() ) {
+                Spectacle spectacle = new Spectacle(rs.getInt("SPECTACLE_ID"), rs.getString("NOM"), rs.getString("DESCRIPTION"), selectTheme(rs.getInt("THEME")));
+                vector.add(spectacle);
+            }
+        
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return vector;
+    }
+    
+    public Vector<Theme> selectAllTheme(){
+        Vector<Theme> vector = new Vector<>();
+        
+        try {
+            ResultSet rs = statement.executeQuery( "SELECT * FROM THEME;" );
+            while ( rs.next() ) {
+                Theme theme = new Theme(rs.getString("NOM"));
+                theme.setNumero(rs.getInt("THEME_ID"));
+                vector.add(theme);
+            }
+        
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return vector;
+    }
+    
+    public Vector<Representation> selectRepresentations(Spectacle spectacle){
+        Vector<Representation> vector = new Vector<>();
+        
+        try {
+            ResultSet rs = statement.executeQuery( "SELECT * FROM THEME;" );
+            while ( rs.next() ) {
+                Date date = new Date(   Integer.valueOf(rs.getString("DATE").substring(0, 3)), 
+                                        Integer.valueOf(rs.getString("DATE").substring(5, 6)), 
+                                        Integer.valueOf(rs.getString("DATE").substring(8, 9))
+                );
+                Representation representation = new Representation(date, rs.getInt("HEURE"), selectSalle(rs.getInt("SALLE")),selectSpectacle(rs.getInt("SPECTACLE")) );
+                representation.setNumero(rs.getInt("THEME_ID"));
+                vector.add(representation);
+            }
+        
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return vector;
+    }
     
     
 }
