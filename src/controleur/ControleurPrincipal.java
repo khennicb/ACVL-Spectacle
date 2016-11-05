@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.sql.Date;
 import java.util.List;
 
+import database.DatabaseManager;
 import modele.*;
 import vue.*;
 import vue.Center.*;
@@ -24,8 +25,11 @@ import vue.Header.*;
 public class ControleurPrincipal {
     private FenetrePrincipale vue;
     private ControleurUtilisateur userControleur;
+    private DatabaseManager dm;
     
     public ControleurPrincipal() {
+    	dm = DatabaseManager.getDatabaseManager();
+    	dm.connect();
     	EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -43,12 +47,15 @@ public class ControleurPrincipal {
 				String login = ((PanelCenterConnexion)(vue.getCenter())).getTextField_connexion_login().getText();
 				String motDePasse = ((PanelCenterConnexion)(vue.getCenter())).getPasswordField_connexion_mdp().getText();
 				if(connexion(login, motDePasse)){
-					//TODO load home
+					
+					
 				} else {
 					((PanelCenterConnexion)(vue.getCenter())).setWarningConnexion("Login ou mot de passe incorrect");
 				}
 			}
 		});
+    	
+    	
     }
        
     public void addSpectacle(){
@@ -76,7 +83,9 @@ public class ControleurPrincipal {
     		return false;
     	}
     	//TODO verification base de donnees
-    	
+    	//si l'utilisateur est responsable
+		//si l'utilisateur est un client
+		userControleur = ControleurClient.instance();
   
     	return true;
     	
