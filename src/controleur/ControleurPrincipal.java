@@ -63,8 +63,8 @@ public class ControleurPrincipal {
     }
     
     public List<Spectacle> getAllSpectacles(){
-        // TODO 
-        return null;
+        List<Spectacle> spectacles = dm.selectAllSpectacle();
+        return spectacles;
     }
     
     
