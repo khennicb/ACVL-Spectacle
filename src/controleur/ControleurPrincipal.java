@@ -23,6 +23,7 @@ import vue.Header.*;
  */
 public class ControleurPrincipal {
     private FenetrePrincipale vue;
+    private ControleurUtilisateur userControleur;
     
     public ControleurPrincipal() {
     	EventQueue.invokeLater(new Runnable() {
