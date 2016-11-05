@@ -6,29 +6,42 @@
 package database;
 import modele.*;
 import java.sql.*;
-import java.util.Vector;
+import java.util.LinkedList;
 /**
  *
  * @author benkh_000
  */
 public class Test_BDD {
 
+    
+    LinkedList<Theme> listTheme = new LinkedList<>();
+    LinkedList<Spectacle> listSpectacle = new LinkedList<>();
+    LinkedList<Salle> listSalle = new LinkedList<>();
+    LinkedList<Representation> listRepresentation = new LinkedList<>();
+    LinkedList<Place> listPlace = new LinkedList<>();
+    LinkedList<SiegeOccupe> listSiege = new LinkedList<>();
+    LinkedList<Utilisateur> listUtilisateur = new LinkedList<>();
+    LinkedList<Dossier> listDossier = new LinkedList<>();
+    
     /**
      * @param args the command line arguments
      */
+    
+    
     public static void main(String[] args) {
         
         Test_BDD test_BDD = new Test_BDD();
 
         test_BDD.initializeBDD();
         
-        test_BDD.testClient();
-
-        test_BDD.testSpectacle();
-        
-        test_BDD.testSalle();
-        
-        test_BDD.testPlace();
+        try {
+            test_BDD.testClient();
+            test_BDD.testSpectacle();
+            test_BDD.testSalle();
+            test_BDD.testPlace();            
+        }catch(Exception e) {
+            
+        }
 
         test_BDD.terminateBDD();
     }
@@ -49,19 +62,30 @@ public class Test_BDD {
 
     }
     public void testSpectacle(){
-        Theme theme = new Theme("Sauvetage des licornes");
-        Spectacle spectacle = new Spectacle(1, "Comment carresser l animal", "Demonstration de carressage avancé de ces animaux magiques", theme);
+        Theme theme1 = new Theme("Sauvetage des licornes");
+        Spectacle spectacle1 = new Spectacle(1, "Comment carresser l animal", "Demonstration de carressage avancé de ces animaux magiques", theme1);
+        Theme theme2 = new Theme("Contemplation du ciel");
+        Spectacle spectacle2 = new Spectacle(1, "L'interpolation des nuages", "Exposé surprennant des théorème de visualisation des spectre nuageux", theme2);
         
-        System.out.println("id :   theme= " + theme.getNumero() + "spectacle=" + spectacle.getNumero());
-        DatabaseManager.getDatabaseManager().insertTheme(theme);
-        DatabaseManager.getDatabaseManager().insertSpectacle(spectacle);
-        System.out.println("id :   theme= " + theme.getNumero() + "spectacle=" + spectacle.getNumero());
+        System.out.println("id :   theme1= " + theme1.getNumero() + "spectacle1=" + spectacle1.getNumero());
+        System.out.println("id :   theme2= " + theme2.getNumero() + "spectacle2=" + spectacle2.getNumero());
+        DatabaseManager.getDatabaseManager().insertTheme(theme1);
+        DatabaseManager.getDatabaseManager().insertSpectacle(spectacle1);
+        DatabaseManager.getDatabaseManager().insertTheme(theme2);
+        DatabaseManager.getDatabaseManager().insertSpectacle(spectacle2);
+        System.out.println("id :   theme1= " + theme1.getNumero() + "spectacle1=" + spectacle1.getNumero());
+        System.out.println("id :   theme2= " + theme2.getNumero() + "spectacle2=" + spectacle2.getNumero());
         
-        Vector<Spectacle> vector = DatabaseManager.getDatabaseManager().selectAllSpectacle();
+        LinkedList<Spectacle> list = DatabaseManager.getDatabaseManager().selectAllSpectacle();
         
-        for (Spectacle s : vector){
+        for (Spectacle s : list){
             System.out.println("Numero=" + s.getNumero() + "\tNom=" + s.getNom() + "\tTheme=" + s.getTheme().getNom() + "\tDescription=" + s.getDescription());
         }
+
+        Spectacle s = DatabaseManager.getDatabaseManager().selectSpectacle(spectacle1.getNumero());
+        System.out.println("Sectacle choosed");
+        System.out.println("Numero=" + s.getNumero() + "\tNom=" + s.getNom() + "\tTheme=" + s.getTheme().getNom() + "\tDescription=" + s.getDescription());
+        
         
     }
     public void testSalle(){

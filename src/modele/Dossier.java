@@ -1,7 +1,7 @@
 package modele;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class Dossier {
@@ -17,6 +17,10 @@ public class Dossier {
         this.date_achat = date_achat;
         this.client = client;
         this.billets = new ArrayList<Billet>();
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
     }
 
     public int getNumero() {

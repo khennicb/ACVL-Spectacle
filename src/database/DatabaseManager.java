@@ -5,7 +5,7 @@
  */
 package database;
 import java.sql.*;
-import java.util.Vector;
+import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modele.*;
@@ -337,7 +337,6 @@ public class DatabaseManager {
         }
     }
     
-
     public void insertSpectacle(Spectacle spectacle){
         
         try {
@@ -362,11 +361,39 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+public void insertDossier(Dossier dossier){
+        
+        try {
+            int key = 0;
+            
+            PreparedStatement preparedStatement = connection
+                    .prepareStatement("INSERT INTO DOSSIER(MONTANT, DATE) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
+            
+            
+            String date = "" + dossier.getDate_achat().getYear()+ "-" + dossier.getDate_achat().getMonth()+ "-" + dossier.getDate_achat().getDay() ;
+            
+            preparedStatement.setString(3, date);  // as ISO8601 strings ("YYYY-MM-DD").
+            
+            preparedStatement.setFloat(1, dossier.getMontant());
+            preparedStatement.setString(2, date);
+            preparedStatement.executeUpdate();
+            
+            ResultSet rs = preparedStatement.getGeneratedKeys();
+            
+            if (rs != null && rs.next()) {
+                key = (int)rs.getLong(1);
+            }
+            
+            dossier.setNumero(key);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void insertRepresentation(Representation representation){
         
         
-        // Inserting the SPECTACLE with his relation with the THEME theme_id
         try {
             int key = 0;
             
@@ -391,6 +418,7 @@ public class DatabaseManager {
             e.printStackTrace();
         }
     }
+
     
 
     public void insertSalle(Salle salle){
@@ -544,7 +572,7 @@ public class DatabaseManager {
         Spectacle spectacle = null;
         
         try {
-            ResultSet rs = statement.executeQuery( "SELECT * FROM Salle WHERE SPECTACLE_ID=" + spectacle_id + ";" );
+            ResultSet rs = statement.executeQuery( "SELECT * FROM SPECTACLE WHERE SPECTACLE_ID=" + spectacle_id + ";" );
             while ( rs.next() ) {
                 spectacle = new Spectacle(rs.getInt("SPECTACLE_ID"), rs.getString("NOM"), rs.getString("DESCRIPTION"), selectTheme(rs.getInt("THEME")));
                 spectacle.setNumero(spectacle_id);
@@ -558,43 +586,61 @@ public class DatabaseManager {
     }
     
     
-    public Vector<Spectacle> selectAllSpectacle(){
-        Vector<Spectacle> vector = new Vector<>();
+    public LinkedList<Spectacle> selectAllSpectacle(){
+        LinkedList<Spectacle> list = new LinkedList<>();
         
         try {
             ResultSet rs = statement.executeQuery( "SELECT * FROM SPECTACLE;" );
             while ( rs.next() ) {
                 Spectacle spectacle = new Spectacle(rs.getInt("SPECTACLE_ID"), rs.getString("NOM"), rs.getString("DESCRIPTION"), selectTheme(rs.getInt("THEME")));
-                vector.add(spectacle);
+                list.push(spectacle);
             }
         
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return vector;
+        return list;
     }
     
-    public Vector<Theme> selectAllTheme(){
-        Vector<Theme> vector = new Vector<>();
+    
+    public LinkedList<Salle> selectAllSalle(){
+        LinkedList<Salle> list = new LinkedList<>();
+        
+        try {
+            ResultSet rs = statement.executeQuery( "SELECT * FROM SALLE;" );
+            while ( rs.next() ) {
+                Salle salle = new Salle(rs.getString("NOM"));
+                list.push(salle);
+            }
+        
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public LinkedList<Theme> selectAllTheme(){
+        LinkedList<Theme> list = new LinkedList<>();
         
         try {
             ResultSet rs = statement.executeQuery( "SELECT * FROM THEME;" );
             while ( rs.next() ) {
                 Theme theme = new Theme(rs.getString("NOM"));
                 theme.setNumero(rs.getInt("THEME_ID"));
-                vector.add(theme);
+                list.push(theme);
             }
         
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return vector;
+        return list;
     }
     
-    public Vector<Representation> selectRepresentations(Spectacle spectacle){
-        Vector<Representation> vector = new Vector<>();
+    public LinkedList<Representation> selectRepresentations(Spectacle spectacle){
+        LinkedList<Representation> list = new LinkedList<>();
         
         try {
             ResultSet rs = statement.executeQuery( "SELECT * FROM THEME;" );
@@ -605,14 +651,14 @@ public class DatabaseManager {
                 );
                 Representation representation = new Representation(date, rs.getInt("HEURE"), selectSalle(rs.getInt("SALLE")),selectSpectacle(rs.getInt("SPECTACLE")) );
                 representation.setNumero(rs.getInt("THEME_ID"));
-                vector.add(representation);
+                list.push(representation);
             }
         
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        return vector;
+        return list;
     }
     
     
