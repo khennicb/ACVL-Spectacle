@@ -51,7 +51,6 @@ public class PanelCenterListeSpectacles extends PanelCenter {
 	
 	public JButton ajoutElmtListeSpectacle(String nom) {
 		JButton btnSpectacle = new JButton(nom);
-		System.out.println("cell " + col + " " + lig);
 		if(col == 20){
 			panel_liste.add(btnSpectacle,"wrap");
 		} else {
