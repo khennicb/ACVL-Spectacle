@@ -50,12 +50,45 @@ public class Reservations {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 209);
+		frame.setBounds(100, 100, 600, 209);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_header = new JPanel();
 		frame.getContentPane().add(panel_header, BorderLayout.NORTH);
+		panel_header.setLayout(new GridLayout(1, 0, 0, 0));
+		
+		JPanel panel_home = new JPanel();
+		panel_header.add(panel_home);
+		panel_home.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JButton btnHome = new JButton("Home");
+		panel_home.add(btnHome);
+		
+		JPanel panel_search = new JPanel();
+		panel_header.add(panel_search);
+		panel_search.setLayout(new GridLayout(1, 0, 0, 0));
+		
+		JTextField textField_search = new JTextField();
+		panel_search.add(textField_search);
+		textField_search.setColumns(10);
+		
+		JButton btnOk = new JButton("Ok");
+		panel_search.add(btnOk);
+		
+		JPanel panel_admin = new JPanel();
+		panel_header.add(panel_admin);
+		panel_admin.setLayout(new GridLayout(1, 0, 0, 0));
+		
+		JButton btnAjoutSpectacle = new JButton("Ajout spectacle");
+		panel_admin.add(btnAjoutSpectacle);
+		
+		JPanel panel_Deconnexion = new JPanel();
+		panel_header.add(panel_Deconnexion);
+		panel_Deconnexion.setLayout(new GridLayout(1, 0, 0, 0));
+		
+		JButton btnDeconnexion = new JButton("D\u00E9connexion");
+		panel_Deconnexion.add(btnDeconnexion);
 		
 		JPanel panel_center = new JPanel();
 		frame.getContentPane().add(panel_center, BorderLayout.CENTER);
@@ -90,20 +123,20 @@ public class Reservations {
 		panel_Reservations.add(panel_Reservations_filtre, BorderLayout.NORTH);
 		panel_Reservations_filtre.setLayout(new MigLayout("", "[grow][grow][grow][grow]", "[grow]"));
 		
-		JPanel panel_search = new JPanel();
-		panel_Reservations_filtre.add(panel_search, "cell 0 0,grow");
-		panel_search.setLayout(new GridLayout(0, 1, 0, 0));
+		JPanel panel_search_2 = new JPanel();
+		panel_Reservations_filtre.add(panel_search_2, "cell 0 0,grow");
+		panel_search_2.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		textField = new JTextField();
-		panel_search.add(textField);
+		panel_search_2.add(textField);
 		textField.setColumns(10);
 		
-		JPanel panel_search_validation = new JPanel();
-		panel_Reservations_filtre.add(panel_search_validation, "cell 1 0,grow");
-		panel_search_validation.setLayout(new GridLayout(0, 1, 0, 0));
+		JPanel panel_search_2_validation = new JPanel();
+		panel_Reservations_filtre.add(panel_search_2_validation, "cell 1 0,grow");
+		panel_search_2_validation.setLayout(new GridLayout(0, 1, 0, 0));
 		
-		JButton btnOk = new JButton("Ok");
-		panel_search_validation.add(btnOk);
+		JButton btnOk_2 = new JButton("Ok");
+		panel_search_2_validation.add(btnOk_2);
 		
 		JPanel panel_ToutSelectionner = new JPanel();
 		panel_Reservations_filtre.add(panel_ToutSelectionner, "cell 2 0,grow");
@@ -121,7 +154,7 @@ public class Reservations {
 		
 		JPanel panel_Reservations_liste = new JPanel();
 		panel_Reservations.add(panel_Reservations_liste, BorderLayout.CENTER);
-		panel_Reservations_liste.setLayout(new GridLayout(1, 0, 0, 0));
+		panel_Reservations_liste.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		JPanel panel_Reservations_elmt_1 = new JPanel();
 		panel_Reservations_liste.add(panel_Reservations_elmt_1);
@@ -143,7 +176,7 @@ public class Reservations {
 		panel_Reservations_elmt_1.add(checkBox_NumClient);
 		
 		JPanel panel_Reservations_elmt_2 = new JPanel();
-		panel_Reservations.add(panel_Reservations_elmt_2, BorderLayout.SOUTH);
+		panel_Reservations_liste.add(panel_Reservations_elmt_2);
 		panel_Reservations_elmt_2.setLayout(new GridLayout(1, 0, 0, 0));
 		
 		JLabel lblNumclient = new JLabel("NumClient");

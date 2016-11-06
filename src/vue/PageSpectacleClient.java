@@ -3,21 +3,29 @@ package vue;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+
 import java.awt.BorderLayout;
+
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+
 import java.awt.Font;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.JTextPane;
 import javax.swing.UIManager;
 import javax.swing.JButton;
 import javax.swing.DropMode;
 import javax.swing.JScrollBar;
+
+import net.miginfocom.swing.MigLayout;
+
 import java.awt.ScrollPane;
 
 public class PageSpectacleClient {
@@ -52,12 +60,49 @@ public class PageSpectacleClient {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 300);
+		frame.setBounds(100, 100, 560, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
 		JPanel panel_header = new JPanel();
 		frame.getContentPane().add(panel_header, BorderLayout.NORTH);
+		
+		JPanel panel_home = new JPanel();
+		panel_home.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JButton btnHome = new JButton("Home");
+		panel_home.add(btnHome);
+		
+		JPanel panel_search = new JPanel();
+		panel_search.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JTextField textField = new JTextField();
+		panel_search.add(textField);
+		textField.setColumns(10);
+		
+		JButton btnOk = new JButton("Ok");
+		panel_search.add(btnOk);
+		
+		JPanel panel_client = new JPanel();
+		panel_client.setLayout(new GridLayout(1, 0, 0, 0));
+		
+		JButton btnCompte = new JButton("Compte");
+		panel_client.add(btnCompte);
+		
+		JButton btnVosCommande = new JButton("Vos commande");
+		panel_client.add(btnVosCommande);
+		panel_header.setLayout(new MigLayout("", "[59px][147px][206px][grow]", "[23px,grow]"));
+		panel_header.add(panel_home, "cell 0 0,alignx left,aligny top");
+		panel_header.add(panel_search, "cell 1 0,growx,aligny top");
+		panel_header.add(panel_client, "cell 2 0,alignx left,aligny top");
+		
+		JPanel panel_deconnexion = new JPanel();
+		panel_header.add(panel_deconnexion, "cell 3 0,grow");
+		panel_deconnexion.setLayout(new GridLayout(0, 1, 0, 0));
+		
+		JButton btnDconnexion = new JButton("D\u00E9connexion");
+		panel_deconnexion.add(btnDconnexion);
+		
 		
 		JPanel panel_center = new JPanel();
 		frame.getContentPane().add(panel_center, BorderLayout.CENTER);
