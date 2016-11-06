@@ -6,7 +6,6 @@ import java.awt.GridLayout;
 import javax.swing.JFrame;
 
 import vue.Center.PanelCenter;
-import vue.Header.PanelHeader;
 
 public class Fenetre {
 	protected PanelCenter center;
@@ -17,7 +16,7 @@ public class Fenetre {
 	 */
 	public Fenetre(PanelCenter center) {
 		this.frame = new JFrame();
-		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+		//frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		this.center = center;
 		
 	}
@@ -35,6 +34,7 @@ public class Fenetre {
 		this.center = center;
 		frame.getContentPane().add(this.center.getPanel(), BorderLayout.CENTER);
 		this.center.getPanel().setLayout(new GridLayout(1, 0, 0, 0));
+		this.show();
 	}
 
 }

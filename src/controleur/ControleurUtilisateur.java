@@ -4,8 +4,8 @@ import modele.Utilisateur;
 
 public class ControleurUtilisateur {
 	final private static ControleurUtilisateur instanceUnique = new ControleurUtilisateur();
-	private ControleurPrincipal controleurPrincipal;
-	private Utilisateur utilisateurCourant;
+	protected ControleurPrincipal controleurPrincipal;
+	protected Utilisateur utilisateurCourant;
 	
 	public void setUtilisateurCourant(Utilisateur utilisateurCourant) {
 		this.utilisateurCourant = utilisateurCourant;
