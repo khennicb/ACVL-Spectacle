@@ -60,7 +60,7 @@ public class PageSpectacleClient {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 560, 300);
+		frame.setBounds(100, 100, 560, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -126,12 +126,27 @@ public class PageSpectacleClient {
 		gbl_panel_content.rowWeights = new double[]{1.0, 1.0, 1.0, Double.MIN_VALUE};
 		panel_content.setLayout(gbl_panel_content);
 		
+		JPanel panel_theme = new JPanel();
+		FlowLayout flowLayout_3 = (FlowLayout) panel_theme.getLayout();
+		flowLayout_3.setAlignment(FlowLayout.LEFT);
+		GridBagConstraints gbc_panel_theme = new GridBagConstraints();
+		gbc_panel_theme.fill = GridBagConstraints.BOTH;
+		gbc_panel_theme.gridx = 0;
+		gbc_panel_theme.gridy = 0;
+		panel_content.add(panel_theme, gbc_panel_theme);
+		
+		JLabel lblThme = new JLabel("Th\u00E8me:");
+		panel_theme.add(lblThme);
+		
+		JLabel lblDrame = new JLabel("Drame");
+		panel_theme.add(lblDrame);
+		
 		JPanel panel_description = new JPanel();
 		GridBagConstraints gbc_panel_description = new GridBagConstraints();
 		gbc_panel_description.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_description.fill = GridBagConstraints.BOTH;
 		gbc_panel_description.gridx = 0;
-		gbc_panel_description.gridy = 0;
+		gbc_panel_description.gridy = 1;
 		panel_content.add(panel_description, gbc_panel_description);
 		panel_description.setLayout(new BorderLayout(0, 0));
 		
@@ -153,13 +168,14 @@ public class PageSpectacleClient {
 		txtpnl_description.setText("jhvhjuvhjvhjvhjjvjhvhj hbbbbbbbbbbbbbbbbbbbb gvvvvvvvvvvvvvvvvvvv Un parc d'attractions peupl\u00E9 de robots propose aux visiteurs de se replonger dans plusieurs \u00E9poques. Lanc\u00E9s dans l'ouest sauvage, deux amis se retrouvent plong\u00E9s en plein cauchemar quand l'un des andro\u00EFdes se d\u00E9traque et les prend en chasse...\r\nUn parc d'attractions peupl\u00E9 de robots propose aux visiteurs de se replonger dans plusieurs \u00E9poques. Lanc\u00E9s dans l'ouest sauvage, deux amis se retrouvent plong\u00E9s en plein cauchemar quand l'un des andro\u00EFdes se d\u00E9traque et les prend en chasse...\r\nUn parc d'attractions peupl\u00E9 de robots propose aux visiteurs de se replonger dans plusieurs \u00E9poques. Lanc\u00E9s dans l'ouest sauvage, deux amis se retrouvent plong\u00E9s en plein cauchemar quand l'un des andro\u00EFdes se d\u00E9traque et les prend en chasse...\r\nUn parc d'attractions peupl\u00E9 de robots propose aux visiteurs de se replonger dans plusieurs \u00E9poques. Lanc\u00E9s dans l'ouest sauvage, deux amis se retrouvent plong\u00E9s en plein cauchemar quand l'un des andro\u00EFdes se d\u00E9traque et les prend en chasse...\r\nUn parc d'attractions peupl\u00E9 de robots propose aux visiteurs de se replonger dans plusieurs \u00E9poques. Lanc\u00E9s dans l'ouest sauvage, deux amis se retrouvent plong\u00E9s en plein cauchemar quand l'un des andro\u00EFdes se d\u00E9traque et les prend en chasse...\r\n");
 		panel_description_content.add(txtpnl_description);
 		
+		
 		JPanel panel_listeRepresentation = new JPanel();
 		GridBagConstraints gbc_panel_listeRepresentation = new GridBagConstraints();
 		gbc_panel_listeRepresentation.gridheight = 2;
 		gbc_panel_listeRepresentation.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_listeRepresentation.fill = GridBagConstraints.BOTH;
 		gbc_panel_listeRepresentation.gridx = 0;
-		gbc_panel_listeRepresentation.gridy = 1;
+		gbc_panel_listeRepresentation.gridy = 2;
 		panel_content.add(panel_listeRepresentation, gbc_panel_listeRepresentation);
 		GridBagLayout gbl_panel_listeRepresentation = new GridBagLayout();
 		gbl_panel_listeRepresentation.columnWidths = new int[]{0, 0};
@@ -202,6 +218,8 @@ public class PageSpectacleClient {
 		
 		JButton btnRserver_1 = new JButton("R\u00E9server");
 		panel_representation_2.add(btnRserver_1);
+		
+		
 	}
 
 }
