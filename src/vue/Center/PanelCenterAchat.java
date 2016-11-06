@@ -19,17 +19,18 @@ public class PanelCenterAchat extends PanelCenter {
 	private JTextField textField_numeroCB;
 	private JTextField textField_Code;
 	private JTextField textField_DateExpi;
+	private JSpinner spinner;
 	private JButton btnValider;
 	private JLabel lblTotal;
 	private JLabel lblReglement;
 	private JLabel lblCode;
 	private JLabel lblDateDexpiration;
-	private JComboBox comboBox_cat;
+	private JComboBox<ComboBoxElement> comboBox_cat;
 	
 	public PanelCenterAchat(ComboBoxElement[] cat) {
 		panel.add(new JLabel("Nombre de place:"), "cell 0 0");
 		
-		JSpinner spinner = new JSpinner();
+		spinner = new JSpinner();
 		panel.add(spinner, "cell 1 0");
 	
 		panel.add(new JLabel("Prix total:"), "cell 3 0");
@@ -39,7 +40,7 @@ public class PanelCenterAchat extends PanelCenter {
 		JLabel lblCatgoriePlace = new JLabel("Cat\u00E9gorie places:");
 		panel.add(lblCatgoriePlace, "cell 0 1,alignx trailing");
 		
-		JComboBox comboBox_cat = new JComboBox();
+		comboBox_cat = new JComboBox<ComboBoxElement>();
 		comboBox_cat.setModel(new DefaultComboBoxModel<ComboBoxElement>(cat));
 		panel.add(comboBox_cat, "cell 1 1,growx");
 		
@@ -70,11 +71,12 @@ public class PanelCenterAchat extends PanelCenter {
 		listePlace = new ArrayList<ArrayList<JComboBox<Integer>>>();
 	}
 	
+	
 	public void ajoutPlace() {
 		ArrayList<JComboBox<Integer>> placeData = new ArrayList<JComboBox<Integer>>();
 		JLabel lblPlace = new JLabel("Place " + (listePlace.size() + 1) +":");
 		int row = listePlace.size() + 2;
-		//remove paimement + validation
+		//remove paimement + validation		
 		panel.remove(lblReglement);
 		panel.remove(textField_numeroCB);
 		panel.remove(lblCode);
@@ -108,6 +110,14 @@ public class PanelCenterAchat extends PanelCenter {
 		panel.add(textField_DateExpi, "cell 4 " + (row + 2) + ",growx");
 		panel.add(btnValider, "cell 4 " + (row + 3));
 	}
+	
+	public void enleverPlace(){
+		if(this.listePlace.size()==0){
+			return;
+		}
+		this.listePlace.remove(this.listePlace.size()-1);
+		//TODO: ça n'enlève rien
+	}
 
 	public JLabel getLblTotal() {
 		return lblTotal;
@@ -117,7 +127,20 @@ public class PanelCenterAchat extends PanelCenter {
 		this.lblTotal = lblTotal;
 	}
 	
+	public int getNombrePlaces(){
+		return listePlace.size();
+	}
 	
+	public JSpinner getSpinner(){
+		return spinner;
+	}
 	
+	public JComboBox<ComboBoxElement> getComboBoxCategory(){
+		return comboBox_cat;
+	};
+	
+	public JButton getBtnValider(){
+		return btnValider;
+	}
 	
 }

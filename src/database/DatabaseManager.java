@@ -484,7 +484,7 @@ public void insertDossier(Dossier dossier){
             PreparedStatement preparedStatement = connection
                     .prepareStatement("INSERT INTO CATEGORIE (NOM, TARIF) VALUES(?,?)", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, categoriePlace.getNom());
-            preparedStatement.setInt(2, categoriePlace.getNumero());
+            preparedStatement.setFloat(2, categoriePlace.getTarif());
             
             preparedStatement.executeUpdate();
            statement = connection.createStatement(); 

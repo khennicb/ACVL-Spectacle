@@ -7,6 +7,8 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import javax.swing.JButton;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import modele.CategoriePlaces;
 import modele.Representation;
@@ -102,21 +104,54 @@ public class ControleurClient extends ControleurUtilisateur {
 			int nbBillet = 0;
 			int nbReserv = 0;
 			Map<String, JButton> btnSpectacle = panelCenter.ajoutElmtRepresentation(r.getDate(), r.getHeure());
-			/*btnSpectacle.get("btnAcheter").addActionListener(new ActionListener(){
+			btnSpectacle.get("btnAcheter").addActionListener(new ActionListener(){
 					@Override
 					public void actionPerformed(ActionEvent arg0) {
 						FenetreAchat achat = new FenetreAchat(getCategoriePlace());
-						EventQueue.invokeLater(new Runnable() {
-							public void run() {
-								try {
-									achat.show();
-								} catch (Exception e) {
-									e.printStackTrace();
+						achat.getSpinner().addChangeListener(new ChangeListener() {
+							@Override
+							public void stateChanged(ChangeEvent e) {
+								int value = (Integer)achat.getSpinner().getValue();
+								if(value < 0){
+									achat.getSpinner().setValue(0);
+									return;
 								}
+								while(value > achat.getNombrePlace()){
+									achat.ajoutPlace();
+								}
+								while(value < achat.getNombrePlace()){
+									achat.enleverPlace();
+								}
+								int catId = ((ComboBoxElement)achat.getComboBoxCategory().getSelectedItem()).getIndex();
+								CategoriePlaces cat = controleurPrincipal.getDatabaseManager().selectCategorie(catId);
+								if(cat != null){
+									achat.getLblTotal().setText(String.format("%.2f",cat.getTarif() * achat.getNombrePlace()));
+								}
+								achat.show();
 							}
-						}); 	
+						});
+						achat.getComboBoxCategory().addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								int catId = ((ComboBoxElement)achat.getComboBoxCategory().getSelectedItem()).getIndex();
+								CategoriePlaces cat = controleurPrincipal.getDatabaseManager().selectCategorie(catId);
+								if(cat != null){
+									achat.getLblTotal().setText(String.format("%.2f",cat.getTarif() * achat.getNombrePlace()));
+								}
+								achat.show();
+							}
+						});
+						achat.getBtnValider().addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								//TODO: vérifier places valides
+								//TODO: vérifier infos carte de crédit valide
+								//
+							}
+						});
+						achat.show();
 					}
-			});*/
+			});
 		}
 	}
 	
