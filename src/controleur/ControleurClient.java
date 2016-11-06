@@ -1,5 +1,6 @@
 package controleur;
 
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
@@ -7,10 +8,13 @@ import java.util.Map;
 
 import javax.swing.JButton;
 
+import modele.CategoriePlaces;
 import modele.Representation;
 import modele.Spectacle;
 import modele.Theme;
 import vue.ComboBoxElement;
+import vue.Fenetre;
+import vue.FenetreAchat;
 import vue.Center.PanelCenter;
 import vue.Center.PanelCenterListeSpectacles;
 import vue.Center.PanelCenterSpectacleClient;
@@ -98,11 +102,32 @@ public class ControleurClient extends ControleurUtilisateur {
 			int nbBillet = 0;
 			int nbReserv = 0;
 			Map<String, JButton> btnSpectacle = panelCenter.ajoutElmtRepresentation(r.getDate(), r.getHeure());
-			/*btnSpectacle.addActionListener(new ActionListener(){
-				@Override
-				public void actionPerformed(ActionEvent arg0) {
-					//TODO
-				}});*/
+			/*btnSpectacle.get("btnAcheter").addActionListener(new ActionListener(){
+					@Override
+					public void actionPerformed(ActionEvent arg0) {
+						FenetreAchat achat = new FenetreAchat(getCategoriePlace());
+						EventQueue.invokeLater(new Runnable() {
+							public void run() {
+								try {
+									achat.show();
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+						}); 	
+					}
+			});*/
 		}
+	}
+	
+	private ComboBoxElement[] getCategoriePlace() {
+		LinkedList<CategoriePlaces> listCat = this.controleurPrincipal.getCategoriePlace();
+		ComboBoxElement[] listCatCombobox = new ComboBoxElement[listCat.size()];
+		int i = 0;
+		for(CategoriePlaces c : listCat){
+			listCatCombobox[i] = new ComboBoxElement(c.getNumero(), c.getNom());
+			i++;
+		}
+		return listCatCombobox;
 	}
 }

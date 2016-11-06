@@ -14,7 +14,9 @@ import java.awt.event.WindowEvent;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 
 import database.DatabaseManager;
@@ -125,6 +127,10 @@ public class ControleurPrincipal {
     public void addRepresentation(Spectacle s, Date date, int heure, Salle salle){
         // TODO : choisir la salle automatiquement (en fonction de celles qui sont libres)?
         s.addRepresentation(date, heure, salle);
+    }
+    
+    public LinkedList<CategoriePlaces> getCategoriePlace(){
+    	return dm.selectAllCategorie();
     }
     
     public boolean connexion(String login, String motDePasse) throws UnsupportedEncodingException, NoSuchAlgorithmException{

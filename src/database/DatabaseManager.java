@@ -740,6 +740,24 @@ public void insertDossier(Dossier dossier){
         return list;
     }
     
+    public LinkedList<CategoriePlaces> selectAllCategorie() {
+		LinkedList<CategoriePlaces> list = new LinkedList<CategoriePlaces>();
+        try {
+           statement = connection.createStatement();
+           ResultSet rs = statement.executeQuery( "SELECT * FROM CATEGORIE;" );
+            while ( rs.next() ) {
+            	CategoriePlaces categorie = new CategoriePlaces(rs.getString("nom"), rs.getFloat("tarif"));
+            	categorie.setNumero(rs.getInt("CATEGORIE_ID"));
+            	list.add(categorie);
+            }
+        
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
     public boolean isUtilisateurEmpty(){
         boolean toReturn =false;
         
