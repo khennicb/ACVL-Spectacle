@@ -18,7 +18,8 @@ public class ControleurClient extends ControleurUtilisateur {
 	static ControleurUtilisateur instance() {
 		return instanceUnique;
 	}
-
+	
+	@Override
 	public void loadHome() {
 		PanelHeaderClient header = new PanelHeaderClient();
 		header.getBtnHome().addActionListener(new ActionListener(){
@@ -48,6 +49,7 @@ public class ControleurClient extends ControleurUtilisateur {
 		this.controleurPrincipal.getVue().show();
 	}
 	
+	@Override
 	public void loadDetailSpectacle(int numeroSpectacle){
 		Spectacle spectacle = this.controleurPrincipal.getDatabaseManager().selectSpectacle(numeroSpectacle);
 		PanelCenterSpectacleClient panelCenter = new PanelCenterSpectacleClient(spectacle.getNom(), spectacle.getDescription());
