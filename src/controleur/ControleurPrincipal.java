@@ -12,9 +12,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -45,8 +46,19 @@ public class ControleurPrincipal {
 					e.printStackTrace();
 				}
 			}
-		});
-    	    	
+		}); 	
+    	
+    	setConnexionListeners();
+    	
+    	vue.getFrame().addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e){
+               dm.close();
+            }
+          });
+    	
+    }
+       
+    public void setConnexionListeners(){
     	((PanelCenterConnexion)(vue.getCenter())).getBtnConnexion().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -66,8 +78,7 @@ public class ControleurPrincipal {
 			}
 		});
     	
-    	final ControleurPrincipal cp = this;
-    	
+    	final ControleurPrincipal cp = this;   
     	((PanelCenterConnexion)(vue.getCenter())).getBtnInscription().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -98,15 +109,7 @@ public class ControleurPrincipal {
 				
 			}
 		});
-    	
-    	vue.getFrame().addWindowListener(new WindowAdapter(){
-            public void windowClosing(WindowEvent e){
-               dm.close();
-            }
-          });
-    	
     }
-       
     public void addSpectacle(){
         // TODO
     }
@@ -124,6 +127,10 @@ public class ControleurPrincipal {
     public void addRepresentation(Spectacle s, Date date, int heure, Salle salle){
         // TODO : choisir la salle automatiquement (en fonction de celles qui sont libres)?
         s.addRepresentation(date, heure, salle);
+    }
+    
+    public LinkedList<CategoriePlaces> getCategoriePlace(){
+    	return dm.selectAllCategorie();
     }
     
     public boolean connexion(String login, String motDePasse) throws UnsupportedEncodingException, NoSuchAlgorithmException{
@@ -152,6 +159,13 @@ public class ControleurPrincipal {
     	userControleur.setControleurPrincipal(this);
     	return true;
     	
+    }
+    
+    public void deconnexion(){
+    	userControleur = null;
+    	this.vue.setHeader(new PanelHeaderConnexion());
+    	this.vue.setCenter(new PanelCenterConnexion());
+    	this.setConnexionListeners();
     }
     
     public FenetrePrincipale getVue() {
@@ -191,10 +205,26 @@ public class ControleurPrincipal {
     		Theme t = dm.selectTheme(2);
     		dm.insertSpectacle(new Spectacle(1, "L'interpolation des nuages", "Expos� surprennant des th�or�me de visualisation des spectre nuageux", t));
     	}
-    	//verifier si la table representation est vide
     	//verifier si la table salle est vide
+    	if(dm.isSalleEmpty()){
+    		dm.insertSalle(new Salle("Le petit palais"));
+    	}
+    	//verifier si la table categorie est vide
+    	if(dm.isCategorieEmpty()){
+    		dm.insertCategoriePlaces(new CategoriePlaces("Orchestre", 150.0f));
+    		dm.insertCategoriePlaces(new CategoriePlaces("Pain au chocolat", 0.15f));
+    	}
     	//verifier si la table place est vide
-    	
+    	if(dm.isPlaceEmpty()){
+    		dm.insertPlace(new Place(1, 1, dm.selectCategorie(1), dm.selectSalle(1)));
+    		dm.insertPlace(new Place(30, 1, dm.selectCategorie(2), dm.selectSalle(1)));
+    		dm.insertPlace(new Place(30, 2, dm.selectCategorie(2), dm.selectSalle(1)));
+    	}
+    	//verifier si la table representation est vide
+    	if(dm.isRepresentationEmpty()){
+    		Calendar cal = Calendar.getInstance();
+    		dm.insertRepresentation(new Representation(cal.getTime(), 12, dm.selectSalle(1), dm.selectSpectacle(1)));
+    	}
 	}
     
 }

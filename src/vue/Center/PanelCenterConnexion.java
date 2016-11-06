@@ -29,6 +29,7 @@ public class PanelCenterConnexion extends PanelCenter {
 	private JLabel lblWarningInscription;
 	
 	public PanelCenterConnexion() {		
+		this.panel.setLayout(new GridLayout(1, 0, 0, 0));
 		JPanel panel_connexion = new JPanel();
 		this.panel.add(panel_connexion);
 		panel_connexion.setLayout(new BorderLayout(0, 0));

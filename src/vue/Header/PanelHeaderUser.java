@@ -55,4 +55,24 @@ public class PanelHeaderUser extends PanelHeader {
 		panel_deconnexion.add(btnDeconnexion);
 		
 	}
+	
+	public JButton getBtnHome(){
+		return btnHome;
+	}
+	
+	public JButton getBtnOk(){
+		return btnOk;
+	}
+	
+	public JButton getBtnDeconnexion(){
+		return btnDeconnexion;
+	}
+	
+	public JTextField getTextFieldSearch(){
+		return textField_search;
+	}
+	
+	public JPanel getPanelUser(){
+		return panel_user;
+	}
 }

@@ -5,9 +5,14 @@
  */
 package database;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import org.sqlite.date.DateParser;
 
 import modele.*;
 
@@ -626,6 +631,24 @@ public void insertDossier(Dossier dossier){
         }
         return salle;
     }
+
+
+	public CategoriePlaces selectCategorie(int categorieId) {
+		CategoriePlaces categorie = null;
+        try {
+           statement = connection.createStatement();
+           ResultSet rs = statement.executeQuery( "SELECT * FROM CATEGORIE WHERE CATEGORIE_ID=" + categorieId + ";" );
+            while ( rs.next() ) {
+            	categorie = new CategoriePlaces(rs.getString("nom"), rs.getFloat("tarif"));
+            	categorie.setNumero(categorieId);
+            }
+        
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return categorie;
+    }
     
     public Spectacle selectSpectacle(int spectacle_id){
         Spectacle spectacle = null;
@@ -645,13 +668,30 @@ public void insertDossier(Dossier dossier){
         return spectacle;
     }
     
-    
     public LinkedList<Spectacle> selectAllSpectacle(){
         LinkedList<Spectacle> list = new LinkedList<>();
         
         try {
            statement = connection.createStatement(); 
            ResultSet rs = statement.executeQuery( "SELECT * FROM SPECTACLE" );
+            while ( rs.next() ) {
+               Spectacle spectacle = new Spectacle(rs.getInt("SPECTACLE_ID"), rs.getString("NOM"), rs.getString("DESCRIPTION"), selectTheme(rs.getInt("THEME")));
+               list.push(spectacle);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public LinkedList<Spectacle> selectAllSpectacleByTheme(int themeId){
+        LinkedList<Spectacle> list = new LinkedList<>();
+        
+        try {
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM SPECTACLE WHERE THEME = "+themeId+";" );
             while ( rs.next() ) {
                Spectacle spectacle = new Spectacle(rs.getInt("SPECTACLE_ID"), rs.getString("NOM"), rs.getString("DESCRIPTION"), selectTheme(rs.getInt("THEME")));
                list.push(spectacle);
@@ -673,6 +713,7 @@ public void insertDossier(Dossier dossier){
            ResultSet rs = statement.executeQuery( "SELECT * FROM SALLE;" );
             while ( rs.next() ) {
                 Salle salle = new Salle(rs.getString("NOM"));
+                salle.setNumero(rs.getInt("SALLE_ID"));
                 list.push(salle);
             }
         
@@ -695,6 +736,24 @@ public void insertDossier(Dossier dossier){
                 list.push(theme);
             }
             rs.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public LinkedList<CategoriePlaces> selectAllCategorie() {
+		LinkedList<CategoriePlaces> list = new LinkedList<CategoriePlaces>();
+        try {
+           statement = connection.createStatement();
+           ResultSet rs = statement.executeQuery( "SELECT * FROM CATEGORIE;" );
+            while ( rs.next() ) {
+            	CategoriePlaces categorie = new CategoriePlaces(rs.getString("nom"), rs.getFloat("tarif"));
+            	categorie.setNumero(rs.getInt("CATEGORIE_ID"));
+            	list.add(categorie);
+            }
+        
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -742,6 +801,76 @@ public void insertDossier(Dossier dossier){
             e.printStackTrace();
         }
         return toReturn;
+    }   
+    
+    public boolean isSalleEmpty(){
+        boolean toReturn =false;
+        
+        try {
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM SALLE;" );
+            toReturn = !rs.next();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
+    }
+    
+    public boolean isCategorieEmpty(){
+        boolean toReturn =false;
+        
+        try {
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM CATEGORIE;" );
+            toReturn = !rs.next();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
+    }
+    
+    public boolean isPlaceEmpty(){
+        boolean toReturn =false;
+        
+        try {
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM PLACE;" );
+            toReturn = !rs.next();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
+    }
+    
+    public boolean isRepresentationEmpty(){
+        boolean toReturn =false;
+        
+        try {
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM REPRESENTATION;" );
+            toReturn = !rs.next();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
+    }
+    
+    public boolean existsOverlappingRepresentation(Date date, int heure, Salle salle){
+    	boolean toReturn = false;
+    	try {
+            statement = connection.createStatement(); 
+            DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+            ResultSet rs = statement.executeQuery( "SELECT * FROM REPRESENTATION WHERE SALLE="+salle.getNumero()+" AND DATE <> "+df.format(date)+" AND HEURE <"+heure+" + 1 AND HEURE >"+heure+" - 1;" );
+            toReturn = rs.next();
+         	rs.close();
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+    	return toReturn;
     }
     
     @SuppressWarnings("deprecation")
@@ -750,15 +879,21 @@ public void insertDossier(Dossier dossier){
         
         try {
            statement = connection.createStatement(); 
-           ResultSet rs = statement.executeQuery( "SELECT * FROM THEME;" );
+           ResultSet rs = statement.executeQuery( "SELECT * FROM REPRESENTATION WHERE SPECTACLE = "+spectacle.getNumero()+";" );
             while ( rs.next() ) {
-                Date date = new Date(   Integer.valueOf(rs.getString("DATE").substring(0, 3)), 
-                                        Integer.valueOf(rs.getString("DATE").substring(5, 6)), 
-                                        Integer.valueOf(rs.getString("DATE").substring(8, 9))
-                );
-                Representation representation = new Representation(date, rs.getInt("HEURE"), selectSalle(rs.getInt("SALLE")),selectSpectacle(rs.getInt("SPECTACLE")) );
-                representation.setNumero(rs.getInt("THEME_ID"));
-                list.push(representation);
+            	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            	try {
+            		//Date today = df.parse(rs.getString("date"));
+	                /*Date date = new Date(   rs.getDate("DATE").getYear(), 
+	                						rs.getDate("DATE").getMonth(),
+	                						rs.getDate("DATE").getDate()
+	                );*/
+	                Representation representation = new Representation(formatter.parse(rs.getString("date")), rs.getInt("HEURE"), selectSalle(rs.getInt("SALLE")),selectSpectacle(rs.getInt("SPECTACLE")) );
+	                representation.setNumero(rs.getInt("REPRESENTATION_ID"));
+	                list.push(representation);
+            	} catch (ParseException e) {
+            		e.printStackTrace();
+            	}
             }
         
         } catch (SQLException e) {

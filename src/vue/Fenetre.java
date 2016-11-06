@@ -37,7 +37,6 @@ public class Fenetre {
 		frame.getContentPane().remove(this.center.getPanel());
 		this.center = center;
 		frame.getContentPane().add(this.center.getPanel(), BorderLayout.CENTER);
-		this.center.getPanel().setLayout(new GridLayout(1, 0, 0, 0));
 		this.show();
 	}
 
