@@ -5,11 +5,13 @@ import java.awt.Font;
 import java.util.Date;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import net.miginfocom.swing.MigLayout;
+import vue.ComboBoxElement;
 
 public class PanelCenterSpectacleResponsable extends PanelCenter {
 	private JTextField txtdate;
@@ -17,6 +19,7 @@ public class PanelCenterSpectacleResponsable extends PanelCenter {
 	private JButton btnAjout;
 	private JPanel panel_ListeRepresentation;
 	private int lig;
+	private JComboBox<ComboBoxElement> comboBoxSalle;
 	
 	public PanelCenterSpectacleResponsable(String nom) {
 		this.init();
@@ -56,6 +59,12 @@ public class PanelCenterSpectacleResponsable extends PanelCenter {
 		panel_ajoutRepresentation.add(txtheure, "cell 2 0");
 		txtheure.setColumns(10);
 		
+		JLabel lblSalle = new JLabel("Salle:");
+		panel_ajoutRepresentation.add(lblSalle, "cell 2 0");
+		
+		comboBoxSalle = new JComboBox<ComboBoxElement>();
+		panel_ajoutRepresentation.add(comboBoxSalle, "cell 2 0");
+
 		btnAjout = new JButton("Ajout");
 		panel_ajoutRepresentation.add(btnAjout, "cell 2 0");
 		
@@ -115,6 +124,10 @@ public class PanelCenterSpectacleResponsable extends PanelCenter {
 	
 	public JButton getBtnAjout(){
 		return btnAjout;
+	}
+	
+	public JComboBox<ComboBoxElement> getComboBoxSalle(){
+		return comboBoxSalle;
 	}
 	
 	public JTextField getTxtDate(){

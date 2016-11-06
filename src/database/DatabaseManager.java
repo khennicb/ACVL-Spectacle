@@ -12,6 +12,8 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.sqlite.date.DateParser;
+
 import modele.*;
 
 /**
@@ -711,6 +713,7 @@ public void insertDossier(Dossier dossier){
            ResultSet rs = statement.executeQuery( "SELECT * FROM SALLE;" );
             while ( rs.next() ) {
                 Salle salle = new Salle(rs.getString("NOM"));
+                salle.setNumero(rs.getInt("SALLE_ID"));
                 list.push(salle);
             }
         
@@ -836,6 +839,20 @@ public void insertDossier(Dossier dossier){
             e.printStackTrace();
         }
         return toReturn;
+    }
+    
+    public boolean existsOverlappingRepresentation(Date date, int heure, Salle salle){
+    	boolean toReturn = false;
+    	try {
+            statement = connection.createStatement(); 
+            DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+            ResultSet rs = statement.executeQuery( "SELECT * FROM REPRESENTATION WHERE SALLE="+salle.getNumero()+" AND DATE <> "+df.format(date)+" AND HEURE <"+heure+" + 1 AND HEURE >"+heure+" - 1;" );
+            toReturn = rs.next();
+         	rs.close();
+         } catch (SQLException e) {
+             e.printStackTrace();
+         }
+    	return toReturn;
     }
     
     @SuppressWarnings("deprecation")

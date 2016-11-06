@@ -4,11 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.text.DateFormatter;
 
@@ -54,7 +56,8 @@ public class ControleurResponsable extends ControleurUtilisateur {
 			filtres[i] = new ComboBoxElement(theme.getNumero(),theme.getNom());
 			i++;
 		}
-		PanelCenterListeSpectacles panelCenterHome = new PanelCenterListeSpectacles(filtres);panelCenterHome.getComboBoxFiltres().addActionListener(new ActionListener() {			
+		PanelCenterListeSpectacles panelCenterHome = new PanelCenterListeSpectacles(filtres);
+		panelCenterHome.getComboBoxFiltres().addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				ComboBoxElement item = (ComboBoxElement)panelCenterHome.getComboBoxFiltres().getSelectedItem();
@@ -93,19 +96,46 @@ public class ControleurResponsable extends ControleurUtilisateur {
 	public void loadDetailSpectacle(int numeroSpectacle){
 		Spectacle spectacle = this.controleurPrincipal.getDatabaseManager().selectSpectacle(numeroSpectacle);
 		PanelCenterSpectacleResponsable panelCenter = new PanelCenterSpectacleResponsable(spectacle.getNom());
+		LinkedList<Salle> salles = this.controleurPrincipal.getDatabaseManager().selectAllSalle();
+		ComboBoxElement[] elements = new ComboBoxElement[salles.size()];
+		int i = 0;
+		for(Salle salle: salles){
+			elements[i] = new ComboBoxElement(salle.getNumero(), salle.getNom());
+			i++;
+		}
+		panelCenter.getComboBoxSalle().setModel(new DefaultComboBoxModel<>(elements));
 		panelCenter.getBtnAjout().addActionListener(new ActionListener() {			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SimpleDateFormat df = new SimpleDateFormat("jj/mm/aaaa");
+				DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
 				try{
 					Date date = df.parse(panelCenter.getTxtDate().getText());
 					int heure = Integer.parseInt(panelCenter.getTxtHeure().getText());
-					Salle salle = controleurPrincipal.getDatabaseManager().selectSalle(1);
+					if(panelCenter.getComboBoxSalle().getSelectedItem() == null){
+						return;
+					}
+					int salleId = ((ComboBoxElement)panelCenter.getComboBoxSalle().getSelectedItem()).getIndex();
+					Salle salle = controleurPrincipal.getDatabaseManager().selectSalle(salleId);
+					if(salle==null){
+						return;
+					}
 					Representation representation = new Representation(date, heure, salle, spectacle);
+					//Verification du non chevauchement de seance sur une salle
+					if(controleurPrincipal.getDatabaseManager().existsOverlappingRepresentation(new java.sql.Date(date.getTime()), heure, salle)){
+						return;
+					}
 					controleurPrincipal.getDatabaseManager().insertRepresentation(representation);
+					JButton btnSpectacle = panelCenter.ajoutElmtRepresentation(representation.getDate(),
+							representation.getHeure(), 0, 0);
+					btnSpectacle.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							//TODO
+						}});
+					controleurPrincipal.getVue().show();
 				}
 				catch(ParseException ex){
-					
+					ex.printStackTrace();
 				}
 			}
 		});
