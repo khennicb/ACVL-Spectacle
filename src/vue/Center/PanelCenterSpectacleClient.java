@@ -21,7 +21,7 @@ import javax.swing.UIManager;
 public class PanelCenterSpectacleClient extends PanelCenter {
 	private JPanel panel_listeRepresentation;
 	
-	public PanelCenterSpectacleClient(String nom, String description) {
+	public PanelCenterSpectacleClient(String nom, String description, String theme) {
 		this.init();
 		JLabel lblTitreSpectacle = new JLabel(nom);
 		lblTitreSpectacle.setFont(new Font("Arial", Font.PLAIN, 16));
@@ -34,12 +34,27 @@ public class PanelCenterSpectacleClient extends PanelCenter {
 		gbl_panel_content.rowWeights = new double[]{1.0, 1.0, 1.0, Double.MIN_VALUE};
 		panel_content.setLayout(gbl_panel_content);
 		
+		JPanel panel_theme = new JPanel();
+		FlowLayout flowLayout_3 = (FlowLayout) panel_theme.getLayout();
+		flowLayout_3.setAlignment(FlowLayout.LEFT);
+		GridBagConstraints gbc_panel_theme = new GridBagConstraints();
+		gbc_panel_theme.fill = GridBagConstraints.BOTH;
+		gbc_panel_theme.gridx = 0;
+		gbc_panel_theme.gridy = 0;
+		panel_content.add(panel_theme, gbc_panel_theme);
+		
+		JLabel lblThme = new JLabel("Th\u00E8me:");
+		panel_theme.add(lblThme);
+		
+		JLabel lblDrame = new JLabel(theme);
+		panel_theme.add(lblDrame);
+		
 		JPanel panel_description = new JPanel();
 		GridBagConstraints gbc_panel_description = new GridBagConstraints();
 		gbc_panel_description.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_description.fill = GridBagConstraints.BOTH;
 		gbc_panel_description.gridx = 0;
-		gbc_panel_description.gridy = 0;
+		gbc_panel_description.gridy = 1;
 		panel_content.add(panel_description, gbc_panel_description);
 		panel_description.setLayout(new BorderLayout(0, 0));
 		
@@ -57,7 +72,6 @@ public class PanelCenterSpectacleClient extends PanelCenter {
 		panel_description.add(panel_description_content, BorderLayout.CENTER);
 		
 		JTextPane txtpnl_description = new JTextPane();
-		//txtpnl_description.setDropMode(DropMode.ON);
 		txtpnl_description.setBackground(UIManager.getColor("menu"));
 		txtpnl_description.setText(description);
 		panel_description_content.add(txtpnl_description);
@@ -68,7 +82,7 @@ public class PanelCenterSpectacleClient extends PanelCenter {
 		gbc_panel_listeRepresentation.insets = new Insets(0, 0, 5, 0);
 		gbc_panel_listeRepresentation.fill = GridBagConstraints.BOTH;
 		gbc_panel_listeRepresentation.gridx = 0;
-		gbc_panel_listeRepresentation.gridy = 1;
+		gbc_panel_listeRepresentation.gridy = 2;
 		panel_content.add(panel_listeRepresentation, gbc_panel_listeRepresentation);
 		GridBagLayout gbl_panel_listeRepresentation = new GridBagLayout();
 		gbl_panel_listeRepresentation.columnWidths = new int[]{0, 0};
