@@ -42,7 +42,7 @@ public class PanelCenterListeSpectacles extends PanelCenter {
 		
 		panel_liste = new JPanel();
 		panel_content.add(panel_liste, BorderLayout.CENTER);
-		panel_liste.setLayout(new MigLayout("", "[][]", "[]"));
+		panel_liste.setLayout(new MigLayout());
 		
 		lig=0;
 		col=0;
@@ -51,7 +51,11 @@ public class PanelCenterListeSpectacles extends PanelCenter {
 	public JButton ajoutElmtListeSpectacle(String nom) {
 		JButton btnSpectacle = new JButton(nom);
 		System.out.println("cell " + col + " " + lig);
-		panel_liste.add(btnSpectacle, "cell " + col + " " + lig);
+		if(col == 20){
+			panel_liste.add(btnSpectacle,"wrap");
+		} else {
+			panel_liste.add(btnSpectacle);
+		}
 		if(col < 20) {
 			col++;
 		} else {
