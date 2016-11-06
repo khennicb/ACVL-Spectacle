@@ -1,5 +1,7 @@
 package controleur;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
 import javax.swing.JButton;
@@ -7,6 +9,7 @@ import javax.swing.JButton;
 import modele.Spectacle;
 import modele.Theme;
 import vue.Center.PanelCenterListeSpectacles;
+import vue.Center.PanelCenterSpectacleClient;
 import vue.Header.PanelHeaderClient;
 
 public class ControleurClient extends ControleurUtilisateur {
@@ -17,7 +20,13 @@ public class ControleurClient extends ControleurUtilisateur {
 	}
 
 	public void loadHome() {
-		this.controleurPrincipal.getVue().setHeader(new PanelHeaderClient());
+		PanelHeaderClient header = new PanelHeaderClient();
+		header.getBtnHome().addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ControleurClient.instance().loadHome();				
+			}});
+		this.controleurPrincipal.getVue().setHeader(header);
 		LinkedList<Theme> themes = this.controleurPrincipal.getDatabaseManager().selectAllTheme();
 		String[] filtres = new String[100];
 		int i = 0;
@@ -30,8 +39,18 @@ public class ControleurClient extends ControleurUtilisateur {
 		LinkedList<Spectacle> spectacles =  this.controleurPrincipal.getDatabaseManager().selectAllSpectacle();
 		for(Spectacle s : spectacles) {
 			JButton btnSpectacle = panelCenterHome.ajoutElmtListeSpectacle(s.getNom());
-			//TODO controleur btnSpectacle
+			btnSpectacle.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					ControleurClient.instance().loadDetailSpectacle(s.getNumero());					
+				}});
 		}
 		this.controleurPrincipal.getVue().show();
+	}
+	
+	public void loadDetailSpectacle(int numeroSpectacle){
+		Spectacle spectacle = this.controleurPrincipal.getDatabaseManager().selectSpectacle(numeroSpectacle);
+		PanelCenterSpectacleClient panelCenter = new PanelCenterSpectacleClient(spectacle.getNom(), spectacle.getDescription());
+		this.controleurPrincipal.getVue().setCenter(panelCenter);
 	}
 }

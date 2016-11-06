@@ -1,9 +1,12 @@
 package controleur;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.LinkedList;
 
 import modele.Theme;
 import vue.Center.PanelCenterListeSpectacles;
+import vue.Header.PanelHeaderClient;
 import vue.Header.PanelHeaderResponsable;
 
 public class ControleurResponsable extends ControleurUtilisateur {
@@ -14,7 +17,13 @@ public class ControleurResponsable extends ControleurUtilisateur {
 	}
 	
 	public void loadHome() {
-		this.controleurPrincipal.getVue().setHeader(new PanelHeaderResponsable());
+		PanelHeaderResponsable header = new PanelHeaderResponsable();
+		header.getBtnHome().addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ControleurClient.instance().loadHome();				
+			}});
+		this.controleurPrincipal.getVue().setHeader(header);
 		LinkedList<Theme> themes = this.controleurPrincipal.getDatabaseManager().selectAllTheme();
 		String[] filtres = new String[100];
 		int i = 0;

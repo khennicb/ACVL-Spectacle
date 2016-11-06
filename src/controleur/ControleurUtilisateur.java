@@ -22,6 +22,9 @@ public class ControleurUtilisateur {
 	public void loadHome() {
 	}
 	
+	public void loadDetailSpectacle(int numeroSpectacle){
+	}
+	
 	public void setControleurPrincipal(ControleurPrincipal cp){
 		this.controleurPrincipal = cp;
 	}

@@ -57,7 +57,7 @@ public class PanelCenterSpectacleClient extends PanelCenter {
 		panel_description.add(panel_description_content, BorderLayout.CENTER);
 		
 		JTextPane txtpnl_description = new JTextPane();
-		txtpnl_description.setDropMode(DropMode.ON);
+		//txtpnl_description.setDropMode(DropMode.ON);
 		txtpnl_description.setBackground(UIManager.getColor("menu"));
 		txtpnl_description.setText(description);
 		panel_description_content.add(txtpnl_description);
