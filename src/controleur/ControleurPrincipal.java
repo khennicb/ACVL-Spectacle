@@ -15,6 +15,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import database.DatabaseManager;
@@ -170,11 +171,11 @@ public class ControleurPrincipal {
 	private void initDataBase() {
 		dm = DatabaseManager.getDatabaseManager();
     	dm.connect();
+    	dm.dropAllTable();
     	dm.createTables();
     	
     	//verifier si la table utilisateur est vide
     	if(dm.isUtilisateurEmpty()){
-    		System.out.println("Utilisateur empty");
     		dm.insertUtilisateur(new ResponsableProgrammation("admin", "admin"));
     		//insertion de client
     		dm.insertUtilisateur(new Client("login_1","mdp1" , "Bernard", "Nia", "totodu38@tes_pa_bo.fr"));
@@ -189,7 +190,6 @@ public class ControleurPrincipal {
     	if(dm.isSpectacleEmpty()){
     		dm.insertSpectacle(new Spectacle(1, "Comment carresser l animal", "Demonstration de carressage avancé de ces animaux magiques", dm.selectTheme(1)));
     		Theme t = dm.selectTheme(2);
-    		System.out.println(t.getNom());
     		dm.insertSpectacle(new Spectacle(1, "L'interpolation des nuages", "Exposé surprennant des théorême de visualisation des spectre nuageux", t));
     	}
     	//verifier si la table representation est vide

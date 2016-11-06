@@ -54,4 +54,11 @@ public class Spectacle {
     public void addRepresentation(Date date, int heure, Salle salle) {
         representations.add(new Representation(date, heure, salle, this));
     }
+
+	@Override
+	public String toString() {
+		return "Spectacle [numero=" + numero + ", nom=" + nom
+				+ ", description=" + description + ", theme=" + theme
+				+ ", representations=" + representations + "]";
+	}
 }

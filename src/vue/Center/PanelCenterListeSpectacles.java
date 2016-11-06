@@ -50,6 +50,7 @@ public class PanelCenterListeSpectacles extends PanelCenter {
 	
 	public JButton ajoutElmtListeSpectacle(String nom) {
 		JButton btnSpectacle = new JButton(nom);
+		System.out.println("cell " + col + " " + lig);
 		panel_liste.add(btnSpectacle, "cell " + col + " " + lig);
 		if(col < 20) {
 			col++;

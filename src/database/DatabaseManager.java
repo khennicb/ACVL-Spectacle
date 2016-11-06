@@ -351,7 +351,6 @@ public class DatabaseManager {
             if (rs != null && rs.next()) {
                 key = (int)rs.getLong(1);
             }
-            
             theme.setNumero(key);
 
         
@@ -378,7 +377,6 @@ public class DatabaseManager {
             if (rs != null && rs.next()) {
                 key = (int)rs.getLong(1);
             }
-            System.out.println("key : " + key);
             spectacle.setNumero(key);
 
         } catch (SQLException e) {
@@ -585,6 +583,7 @@ public void insertDossier(Dossier dossier){
         Theme theme = null;
         
         try {
+        	statement = connection.createStatement();
             ResultSet rs = statement.executeQuery( "SELECT * FROM THEME WHERE THEME_ID=" + theme_id + ";" );
             while ( rs.next() ) {
                 theme  = new Theme(rs.getString("nom"));
@@ -641,7 +640,7 @@ public void insertDossier(Dossier dossier){
             ResultSet rs = statement.executeQuery( "SELECT * FROM SPECTACLE" );
             while ( rs.next() ) {
                 Spectacle spectacle = new Spectacle(rs.getInt("SPECTACLE_ID"), rs.getString("NOM"), rs.getString("DESCRIPTION"), selectTheme(rs.getInt("THEME")));
-                list.push(spectacle);
+               list.push(spectacle);
             }
             rs.close();
         } catch (SQLException e) {
