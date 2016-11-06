@@ -207,7 +207,8 @@ public class ControleurPrincipal {
     	}
     	//verifier si la table representation est vide
     	if(dm.isRepresentationEmpty()){
-    		dm.insertRepresentation(new Representation(new Date(Calendar.getInstance().getTime().getTime()), 12, dm.selectSalle(1), dm.selectSpectacle(1)));
+    		Calendar cal = Calendar.getInstance();
+    		dm.insertRepresentation(new Representation(cal.getTime(), 12, dm.selectSalle(1), dm.selectSpectacle(1)));
     	}
 	}
     

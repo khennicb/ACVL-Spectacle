@@ -3,12 +3,15 @@ package controleur;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.LinkedList;
+import java.util.Map;
 
 import javax.swing.JButton;
 
+import modele.Representation;
 import modele.Spectacle;
 import modele.Theme;
 import vue.ComboBoxElement;
+import vue.Center.PanelCenter;
 import vue.Center.PanelCenterListeSpectacles;
 import vue.Center.PanelCenterSpectacleClient;
 import vue.Header.PanelHeaderClient;
@@ -62,6 +65,7 @@ public class ControleurClient extends ControleurUtilisateur {
 		this.controleurPrincipal.getVue().show();
 	}
 	
+	@Override
 	public void majListeSpectacles(PanelCenterListeSpectacles panelCenter, LinkedList<Spectacle> spectacles){
 		for(Spectacle s : spectacles) {
 			JButton btnSpectacle = panelCenter.ajoutElmtListeSpectacle(s.getNom());
@@ -78,5 +82,21 @@ public class ControleurClient extends ControleurUtilisateur {
 		Spectacle spectacle = this.controleurPrincipal.getDatabaseManager().selectSpectacle(numeroSpectacle);
 		PanelCenterSpectacleClient panelCenter = new PanelCenterSpectacleClient(spectacle.getNom(), spectacle.getDescription(), spectacle.getTheme().getNom());
 		this.controleurPrincipal.getVue().setCenter(panelCenter);
+		LinkedList<Representation> representations = this.controleurPrincipal.getDatabaseManager().selectRepresentations(spectacle);
+		majListeRepresentations(panelCenter, representations);
+		this.controleurPrincipal.getVue().show();
+	}
+	
+	public void majListeRepresentations(PanelCenterSpectacleClient panelCenter, LinkedList<Representation> representations){
+		for(Representation r : representations) {
+			int nbBillet = 0;
+			int nbReserv = 0;
+			Map<String, JButton> btnSpectacle = panelCenter.ajoutElmtRepresentation(r.getDate(), r.getHeure());
+			/*btnSpectacle.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					//TODO
+				}});*/
+		}
 	}
 }

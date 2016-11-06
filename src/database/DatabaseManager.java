@@ -5,6 +5,9 @@
  */
 package database;
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -841,15 +844,21 @@ public void insertDossier(Dossier dossier){
         
         try {
            statement = connection.createStatement(); 
-           ResultSet rs = statement.executeQuery( "SELECT * FROM THEME;" );
+           ResultSet rs = statement.executeQuery( "SELECT * FROM REPRESENTATION WHERE SPECTACLE = "+spectacle.getNumero()+";" );
             while ( rs.next() ) {
-                Date date = new Date(   Integer.valueOf(rs.getString("DATE").substring(0, 3)), 
-                                        Integer.valueOf(rs.getString("DATE").substring(5, 6)), 
-                                        Integer.valueOf(rs.getString("DATE").substring(8, 9))
-                );
-                Representation representation = new Representation(date, rs.getInt("HEURE"), selectSalle(rs.getInt("SALLE")),selectSpectacle(rs.getInt("SPECTACLE")) );
-                representation.setNumero(rs.getInt("THEME_ID"));
-                list.push(representation);
+            	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+            	try {
+            		//Date today = df.parse(rs.getString("date"));
+	                /*Date date = new Date(   rs.getDate("DATE").getYear(), 
+	                						rs.getDate("DATE").getMonth(),
+	                						rs.getDate("DATE").getDate()
+	                );*/
+	                Representation representation = new Representation(formatter.parse(rs.getString("date")), rs.getInt("HEURE"), selectSalle(rs.getInt("SALLE")),selectSpectacle(rs.getInt("SPECTACLE")) );
+	                representation.setNumero(rs.getInt("REPRESENTATION_ID"));
+	                list.push(representation);
+            	} catch (ParseException e) {
+            		e.printStackTrace();
+            	}
             }
         
         } catch (SQLException e) {
