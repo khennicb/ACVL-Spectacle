@@ -12,6 +12,7 @@ import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import javax.swing.JComboBox;
 
 public class PageSpectacleAdmin {
 
@@ -49,7 +50,7 @@ public class PageSpectacleAdmin {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 560, 307);
+		frame.setBounds(100, 100, 660, 319);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		
@@ -134,12 +135,18 @@ public class PageSpectacleAdmin {
 		panel_ajoutRepresentation.add(txtheure, "cell 2 0");
 		txtheure.setColumns(10);
 		
+		JLabel lblSalle = new JLabel("Salle:");
+		panel_ajoutRepresentation.add(lblSalle, "cell 2 0");
+		
+		JComboBox comboBoxSalle = new JComboBox();
+		panel_ajoutRepresentation.add(comboBoxSalle, "cell 2 0");
+		
 		JButton btnAjout = new JButton("Ajout");
 		panel_ajoutRepresentation.add(btnAjout, "cell 2 0");
 		
 		JPanel panel_ListeRepresentation = new JPanel();
 		panel_content.add(panel_ListeRepresentation, BorderLayout.CENTER);
-		panel_ListeRepresentation.setLayout(new MigLayout("", "[][][]", "[][]"));
+		panel_ListeRepresentation.setLayout(new MigLayout("", "[][][][]", "[][]"));
 		
 		JLabel lblHorraire = new JLabel("Horraire");
 		lblHorraire.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -162,6 +169,9 @@ public class PageSpectacleAdmin {
 		
 		btnNbrReservation = new JButton("10");
 		panel_ListeRepresentation.add(btnNbrReservation, "cell 2 1");
+		
+		JButton btnAnnuler = new JButton("Annuler");
+		panel_ListeRepresentation.add(btnAnnuler, "cell 3 1,aligny baseline");
 	}
 
 }
