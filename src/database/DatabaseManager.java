@@ -62,6 +62,7 @@ public class DatabaseManager {
         createUtilisateurTable();
         createThemeTable();
         createSpectacleTable();
+        createDossierTable();
         createSalleTable();
         createRepresentationTable();
         createCategorieTable();
@@ -78,11 +79,24 @@ public class DatabaseManager {
         String userTable =  "CREATE TABLE IF NOT EXISTS UTILISATEUR (" +
                                 " UTILISATEUR_ID   INTEGER            PRIMARY KEY AUTOINCREMENT ," +
                                 " LOGIN            TEXT               NOT NULL, " + 
-                                " Password         TEXT                NOT NULL, " + 
+                                " Password         TEXT               NOT NULL, " + 
                                 " TYPE_UTILISATEUR INT                NOT NULL, " + 
                                 " NOM              TEXT               NOT NULL, " + 
                                 " PRENOM           TEXT               NOT NULL, " + 
                                 " MAIL             TEXT               NOT NULL " + 
+                            ")"; 
+        try {
+            statement.executeUpdate(userTable);
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void createDossierTable() {
+        String userTable =  "CREATE TABLE IF NOT EXISTS DOSSIER (" +
+                                " DOSSIER_ID       INTEGER            PRIMARY KEY AUTOINCREMENT ," +
+                                " MONTANT          REAL               NOT NULL, " + 
+                                " DATE_TRANSACTION DATE               NOT NULL  " +
                             ")"; 
         try {
             statement.executeUpdate(userTable);
@@ -266,7 +280,13 @@ public class DatabaseManager {
             statement.executeUpdate(categorieTable);
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
+        }           
+        try {
+            statement.executeUpdate(dossierTable);
+        } catch (SQLException ex) {
+            Logger.getLogger(DatabaseManager.class.getName()).log(Level.SEVERE, null, ex);
         }                
+        
     }
     
     // INSERT
@@ -289,11 +309,14 @@ public class DatabaseManager {
                 preparedStatement.setString(5, client.getPrenom());
                 if(client.getMail() != null) {
                     preparedStatement.setString(6, client.getMail());
+                } else {
+                    preparedStatement.setString(6, "");
                 }
             } else if (utilisateur instanceof ResponsableProgrammation) {
+                preparedStatement.setString(4, "");
+                preparedStatement.setString(5, "");
+                preparedStatement.setString(6, "");
                 preparedStatement.setInt(3, 1);
-            } else if (utilisateur instanceof SuperUser) {
-                preparedStatement.setInt(3, 2);
             }
             
             preparedStatement.executeUpdate();
