@@ -626,6 +626,24 @@ public void insertDossier(Dossier dossier){
         }
         return salle;
     }
+
+
+	public CategoriePlaces selectCategorie(int categorieId) {
+		CategoriePlaces categorie = null;
+        try {
+           statement = connection.createStatement();
+           ResultSet rs = statement.executeQuery( "SELECT * FROM CATEGORIE WHERE CATEGORIE_ID=" + categorieId + ";" );
+            while ( rs.next() ) {
+            	categorie = new CategoriePlaces(rs.getString("nom"), rs.getFloat("tarif"));
+            	categorie.setNumero(categorieId);
+            }
+        
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return categorie;
+    }
     
     public Spectacle selectSpectacle(int spectacle_id){
         Spectacle spectacle = null;
@@ -753,6 +771,62 @@ public void insertDossier(Dossier dossier){
         try {
            statement = connection.createStatement(); 
            ResultSet rs = statement.executeQuery( "SELECT * FROM THEME;" );
+            toReturn = !rs.next();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
+    }   
+    
+    public boolean isSalleEmpty(){
+        boolean toReturn =false;
+        
+        try {
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM SALLE;" );
+            toReturn = !rs.next();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
+    }
+    
+    public boolean isCategorieEmpty(){
+        boolean toReturn =false;
+        
+        try {
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM CATEGORIE;" );
+            toReturn = !rs.next();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
+    }
+    
+    public boolean isPlaceEmpty(){
+        boolean toReturn =false;
+        
+        try {
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM PLACE;" );
+            toReturn = !rs.next();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
+    }
+    
+    public boolean isRepresentationEmpty(){
+        boolean toReturn =false;
+        
+        try {
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM REPRESENTATION;" );
             toReturn = !rs.next();
             rs.close();
         } catch (SQLException e) {

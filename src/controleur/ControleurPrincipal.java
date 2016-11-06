@@ -14,6 +14,7 @@ import java.awt.event.WindowEvent;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 import database.DatabaseManager;
@@ -189,10 +190,25 @@ public class ControleurPrincipal {
     		Theme t = dm.selectTheme(2);
     		dm.insertSpectacle(new Spectacle(1, "L'interpolation des nuages", "Expos� surprennant des th�or�me de visualisation des spectre nuageux", t));
     	}
-    	//verifier si la table representation est vide
     	//verifier si la table salle est vide
+    	if(dm.isSalleEmpty()){
+    		dm.insertSalle(new Salle("Le petit palais"));
+    	}
+    	//verifier si la table categorie est vide
+    	if(dm.isCategorieEmpty()){
+    		dm.insertCategoriePlaces(new CategoriePlaces("Orchestre", 150.0f));
+    		dm.insertCategoriePlaces(new CategoriePlaces("Pain au chocolat", 0.15f));
+    	}
     	//verifier si la table place est vide
-    	
+    	if(dm.isPlaceEmpty()){
+    		dm.insertPlace(new Place(1, 1, dm.selectCategorie(1), dm.selectSalle(1)));
+    		dm.insertPlace(new Place(30, 1, dm.selectCategorie(2), dm.selectSalle(1)));
+    		dm.insertPlace(new Place(30, 2, dm.selectCategorie(2), dm.selectSalle(1)));
+    	}
+    	//verifier si la table representation est vide
+    	if(dm.isRepresentationEmpty()){
+    		dm.insertRepresentation(new Representation(new Date(Calendar.getInstance().getTime().getTime()), 12, dm.selectSalle(1), dm.selectSpectacle(1)));
+    	}
 	}
     
 }
