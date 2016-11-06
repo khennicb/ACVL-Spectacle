@@ -13,9 +13,8 @@ public class PanelCenter extends AbstractPanel {
 	
 	
 	protected void init(){
+		panel.setLayout(new BorderLayout(0, 0));
 		panel_titre = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panel_titre.getLayout();
-		flowLayout.setAlignment(FlowLayout.LEFT);
 		panel.add(panel_titre, BorderLayout.NORTH);
 		
 		panel_content = new JPanel();

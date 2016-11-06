@@ -30,7 +30,6 @@ public class ControleurClient extends ControleurUtilisateur {
 		LinkedList<Spectacle> spectacles =  this.controleurPrincipal.getDatabaseManager().selectAllSpectacle();
 		for(Spectacle s : spectacles) {
 			JButton btnSpectacle = panelCenterHome.ajoutElmtListeSpectacle(s.getNom());
-			System.out.println(s.getNom());
 			//TODO controleur btnSpectacle
 		}
 		this.controleurPrincipal.getVue().show();

@@ -12,10 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 import database.DatabaseManager;
@@ -171,7 +169,6 @@ public class ControleurPrincipal {
 	private void initDataBase() {
 		dm = DatabaseManager.getDatabaseManager();
     	dm.connect();
-    	dm.dropAllTable();
     	dm.createTables();
     	
     	//verifier si la table utilisateur est vide
