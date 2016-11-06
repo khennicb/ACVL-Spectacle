@@ -215,7 +215,8 @@ public class DatabaseManager {
         
         try {
             DatabaseMetaData md = connection.getMetaData();
-            ResultSet rs;
+           statement = connection.createStatement(); 
+           ResultSet rs;
             rs = md.getTables(null, null, "%", null);
             while (rs.next()) {
                 System.out.println(rs.getString(3));
@@ -322,7 +323,8 @@ public class DatabaseManager {
             
             preparedStatement.executeUpdate();
                     
-            ResultSet rs = preparedStatement.getGeneratedKeys();
+           statement = connection.createStatement(); 
+           ResultSet rs = preparedStatement.getGeneratedKeys();
             
             if (rs != null && rs.next()) {
                 key = (int)rs.getLong(1);
@@ -346,7 +348,8 @@ public class DatabaseManager {
             preparedStatement.setString(1, theme.getNom());
             preparedStatement.executeUpdate();
         
-            ResultSet rs = preparedStatement.getGeneratedKeys();
+           statement = connection.createStatement(); 
+           ResultSet rs = preparedStatement.getGeneratedKeys();
             
             if (rs != null && rs.next()) {
                 key = (int)rs.getLong(1);
@@ -372,7 +375,8 @@ public class DatabaseManager {
             preparedStatement.setString(3, spectacle.getDescription());
             preparedStatement.executeUpdate();
             
-            ResultSet rs = preparedStatement.getGeneratedKeys();
+           statement = connection.createStatement(); 
+           ResultSet rs = preparedStatement.getGeneratedKeys();
             
             if (rs != null && rs.next()) {
                 key = (int)rs.getLong(1);
@@ -400,7 +404,8 @@ public void insertDossier(Dossier dossier){
             preparedStatement.setString(2, date);
             preparedStatement.executeUpdate();
             
-            ResultSet rs = preparedStatement.getGeneratedKeys();
+           statement = connection.createStatement(); 
+           ResultSet rs = preparedStatement.getGeneratedKeys();
             
             if (rs != null && rs.next()) {
                 key = (int)rs.getLong(1);
@@ -430,7 +435,8 @@ public void insertDossier(Dossier dossier){
             preparedStatement.setInt(4, representation.getHeure());
             preparedStatement.executeUpdate();
             
-            ResultSet rs = preparedStatement.getGeneratedKeys();
+           statement = connection.createStatement(); 
+           ResultSet rs = preparedStatement.getGeneratedKeys();
             if (rs != null && rs.next()) {
                 key = (int)rs.getLong(1);
             }            
@@ -452,7 +458,8 @@ public void insertDossier(Dossier dossier){
             preparedStatement.setString(1, salle.getNom());
             preparedStatement.executeUpdate();
             
-            ResultSet rs = preparedStatement.getGeneratedKeys();
+           statement = connection.createStatement(); 
+           ResultSet rs = preparedStatement.getGeneratedKeys();
             
             if (rs != null && rs.next()) {
                 key = (int)rs.getLong(1);
@@ -475,7 +482,8 @@ public void insertDossier(Dossier dossier){
             preparedStatement.setInt(2, categoriePlace.getNumero());
             
             preparedStatement.executeUpdate();
-            ResultSet rs = preparedStatement.getGeneratedKeys();
+           statement = connection.createStatement(); 
+           ResultSet rs = preparedStatement.getGeneratedKeys();
             
             if (rs != null && rs.next()) {
                 key = (int)rs.getLong(1);
@@ -499,7 +507,8 @@ public void insertDossier(Dossier dossier){
             preparedStatement.setInt(4, place.getPlaceRang());
             
             preparedStatement.executeUpdate();
-            ResultSet rs = preparedStatement.getGeneratedKeys();
+           statement = connection.createStatement(); 
+           ResultSet rs = preparedStatement.getGeneratedKeys();
             
             if (rs != null && rs.next()) {
                 key = (int)rs.getLong(1);
@@ -541,7 +550,8 @@ public void insertDossier(Dossier dossier){
             preparedStatement.setInt(4, utilisateur_id);
 
             preparedStatement.executeUpdate();
-            ResultSet rs = preparedStatement.getGeneratedKeys();
+           statement = connection.createStatement(); 
+           ResultSet rs = preparedStatement.getGeneratedKeys();
 
             siegeOccupe.setNumero(key);
 
@@ -559,7 +569,8 @@ public void insertDossier(Dossier dossier){
         Utilisateur utilisateur = null;
         
         try {
-            ResultSet rs = statement.executeQuery( "SELECT * FROM UTILISATEUR WHERE LOGIN=\"" + login + "\" AND PASSWORD=\"" + password + "\" ;" );
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM UTILISATEUR WHERE LOGIN=\"" + login + "\" AND PASSWORD=\"" + password + "\" ;" );
             while ( rs.next() ) {
                 if(rs.getInt("TYPE_UTILISATEUR") == 0) {
                     // L'utilisateur est un client
@@ -583,7 +594,7 @@ public void insertDossier(Dossier dossier){
         Theme theme = null;
         
         try {
-        	statement = connection.createStatement();
+            statement = connection.createStatement();
             ResultSet rs = statement.executeQuery( "SELECT * FROM THEME WHERE THEME_ID=" + theme_id + ";" );
             while ( rs.next() ) {
                 theme  = new Theme(rs.getString("nom"));
@@ -602,7 +613,8 @@ public void insertDossier(Dossier dossier){
         Salle salle = null;
         
         try {
-            ResultSet rs = statement.executeQuery( "SELECT * FROM Salle WHERE SALLE_ID=" + salle_id + ";" );
+           statement = connection.createStatement();
+           ResultSet rs = statement.executeQuery( "SELECT * FROM Salle WHERE SALLE_ID=" + salle_id + ";" );
             while ( rs.next() ) {
                 salle = new Salle(rs.getString("nom"));
                 salle.setNumero(salle_id);
@@ -619,7 +631,8 @@ public void insertDossier(Dossier dossier){
         Spectacle spectacle = null;
         
         try {
-            ResultSet rs = statement.executeQuery( "SELECT * FROM SPECTACLE WHERE SPECTACLE_ID=" + spectacle_id + ";" );
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM SPECTACLE WHERE SPECTACLE_ID=" + spectacle_id + ";" );
             while ( rs.next() ) {
                 spectacle = new Spectacle(rs.getInt("SPECTACLE_ID"), rs.getString("NOM"), rs.getString("DESCRIPTION"), selectTheme(rs.getInt("THEME")));
                 spectacle.setNumero(spectacle_id);
@@ -637,9 +650,10 @@ public void insertDossier(Dossier dossier){
         LinkedList<Spectacle> list = new LinkedList<>();
         
         try {
-            ResultSet rs = statement.executeQuery( "SELECT * FROM SPECTACLE" );
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM SPECTACLE" );
             while ( rs.next() ) {
-                Spectacle spectacle = new Spectacle(rs.getInt("SPECTACLE_ID"), rs.getString("NOM"), rs.getString("DESCRIPTION"), selectTheme(rs.getInt("THEME")));
+               Spectacle spectacle = new Spectacle(rs.getInt("SPECTACLE_ID"), rs.getString("NOM"), rs.getString("DESCRIPTION"), selectTheme(rs.getInt("THEME")));
                list.push(spectacle);
             }
             rs.close();
@@ -655,7 +669,8 @@ public void insertDossier(Dossier dossier){
         LinkedList<Salle> list = new LinkedList<>();
         
         try {
-            ResultSet rs = statement.executeQuery( "SELECT * FROM SALLE;" );
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM SALLE;" );
             while ( rs.next() ) {
                 Salle salle = new Salle(rs.getString("NOM"));
                 list.push(salle);
@@ -672,7 +687,8 @@ public void insertDossier(Dossier dossier){
         LinkedList<Theme> list = new LinkedList<>();
         
         try {
-            ResultSet rs = statement.executeQuery( "SELECT * FROM THEME;" );
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM THEME;" );
             while ( rs.next() ) {
                 Theme theme = new Theme(rs.getString("NOM"));
                 theme.setNumero(rs.getInt("THEME_ID"));
@@ -690,7 +706,8 @@ public void insertDossier(Dossier dossier){
         boolean toReturn =false;
         
         try {
-            ResultSet rs = statement.executeQuery( "SELECT * FROM UTILISATEUR;" );
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM UTILISATEUR;" );
             toReturn = !rs.next();
             rs.close();
         } catch (SQLException e) {
@@ -703,7 +720,8 @@ public void insertDossier(Dossier dossier){
         boolean toReturn =false;
         
         try {
-            ResultSet rs = statement.executeQuery( "SELECT * FROM SPECTACLE;" );
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM SPECTACLE;" );
             toReturn = !rs.next();
             rs.close();
         } catch (SQLException e) {
@@ -716,7 +734,8 @@ public void insertDossier(Dossier dossier){
         boolean toReturn =false;
         
         try {
-            ResultSet rs = statement.executeQuery( "SELECT * FROM THEME;" );
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM THEME;" );
             toReturn = !rs.next();
             rs.close();
         } catch (SQLException e) {
@@ -730,7 +749,8 @@ public void insertDossier(Dossier dossier){
         LinkedList<Representation> list = new LinkedList<>();
         
         try {
-            ResultSet rs = statement.executeQuery( "SELECT * FROM THEME;" );
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM THEME;" );
             while ( rs.next() ) {
                 Date date = new Date(   Integer.valueOf(rs.getString("DATE").substring(0, 3)), 
                                         Integer.valueOf(rs.getString("DATE").substring(5, 6)), 

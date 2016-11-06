@@ -54,7 +54,7 @@ public class FenetrePrincipale extends Fenetre {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					FenetrePrincipale window = new FenetrePrincipale(new PanelHeaderConnexion(), new PanelCenterListeSpectacles(tab) );
+					final FenetrePrincipale window = new FenetrePrincipale(new PanelHeaderConnexion(), new PanelCenterListeSpectacles(tab) );
 					window.show();
 					
 					PanelCenter test = new PanelCenterConnexion();

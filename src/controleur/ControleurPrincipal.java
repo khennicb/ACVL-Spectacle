@@ -66,7 +66,7 @@ public class ControleurPrincipal {
 			}
 		});
     	
-    	ControleurPrincipal cp = this;
+    	final ControleurPrincipal cp = this;
     	
     	((PanelCenterConnexion)(vue.getCenter())).getBtnInscription().addActionListener(new ActionListener() {
 			@Override
@@ -90,10 +90,10 @@ public class ControleurPrincipal {
 			    		userControleur.loadHome();
 						
 					} else {
-						((PanelCenterConnexion)(vue.getCenter())).setWarningInscription("Les deux mots de passe sont différents");
+						((PanelCenterConnexion)(vue.getCenter())).setWarningInscription("Les deux mots de passe sont diffï¿½rents");
 					}
 				} else {
-					((PanelCenterConnexion)(vue.getCenter())).setWarningInscription("Tous les champs doivent être renseignés");
+					((PanelCenterConnexion)(vue.getCenter())).setWarningInscription("Tous les champs doivent ï¿½tre renseignï¿½s");
 				}
 				
 			}
@@ -188,9 +188,9 @@ public class ControleurPrincipal {
     	}
     	//verifier si la table spectacle est vide
     	if(dm.isSpectacleEmpty()){
-    		dm.insertSpectacle(new Spectacle(1, "Comment carresser l animal", "Demonstration de carressage avancé de ces animaux magiques", dm.selectTheme(1)));
+    		dm.insertSpectacle(new Spectacle(1, "Comment carresser l animal", "Demonstration de carressage avancï¿½ de ces animaux magiques", dm.selectTheme(1)));
     		Theme t = dm.selectTheme(2);
-    		dm.insertSpectacle(new Spectacle(1, "L'interpolation des nuages", "Exposé surprennant des théorême de visualisation des spectre nuageux", t));
+    		dm.insertSpectacle(new Spectacle(1, "L'interpolation des nuages", "Exposï¿½ surprennant des thï¿½orï¿½me de visualisation des spectre nuageux", t));
     	}
     	//verifier si la table representation est vide
     	//verifier si la table salle est vide
