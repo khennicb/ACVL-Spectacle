@@ -161,6 +161,7 @@ public class ControleurPrincipal {
     	this.vue.setCenter(new PanelCenterConnexion());
     	this.setConnexionListeners();
     }
+    
     public FenetrePrincipale getVue() {
 		return vue;
 	}

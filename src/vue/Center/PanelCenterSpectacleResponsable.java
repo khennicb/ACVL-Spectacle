@@ -14,6 +14,7 @@ import net.miginfocom.swing.MigLayout;
 public class PanelCenterSpectacleResponsable extends PanelCenter {
 	private JTextField txtdate;
 	private JTextField txtheure;
+	private JButton btnAjout;
 	private JPanel panel_ListeRepresentation;
 	private int lig;
 	
@@ -41,7 +42,7 @@ public class PanelCenterSpectacleResponsable extends PanelCenter {
 		
 		txtdate = new JTextField();
 		lblDate.setLabelFor(txtdate);
-		txtdate.setText("JJ/MM/AA  ");
+		txtdate.setText("JJ/MM/AAAA ");
 		panel_ajoutRepresentation.add(txtdate, "flowx,cell 2 0,growx");
 		txtdate.setColumns(10);
 		
@@ -55,7 +56,7 @@ public class PanelCenterSpectacleResponsable extends PanelCenter {
 		panel_ajoutRepresentation.add(txtheure, "cell 2 0");
 		txtheure.setColumns(10);
 		
-		JButton btnAjout = new JButton("Ajout");
+		btnAjout = new JButton("Ajout");
 		panel_ajoutRepresentation.add(btnAjout, "cell 2 0");
 		
 		panel_ListeRepresentation = new JPanel();
@@ -111,5 +112,16 @@ public class PanelCenterSpectacleResponsable extends PanelCenter {
 		
 		lig = 0;
 	}
-
+	
+	public JButton getBtnAjout(){
+		return btnAjout;
+	}
+	
+	public JTextField getTxtDate(){
+		return txtdate;
+	}
+	
+	public JTextField getTxtHeure(){
+		return txtheure;
+	}
 }

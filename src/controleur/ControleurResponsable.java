@@ -4,11 +4,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedList;
 
 import javax.swing.JButton;
+import javax.swing.text.DateFormatter;
 
 import modele.Representation;
+import modele.Salle;
 import modele.Spectacle;
 import modele.Theme;
 import vue.ComboBoxElement;
@@ -88,6 +93,22 @@ public class ControleurResponsable extends ControleurUtilisateur {
 	public void loadDetailSpectacle(int numeroSpectacle){
 		Spectacle spectacle = this.controleurPrincipal.getDatabaseManager().selectSpectacle(numeroSpectacle);
 		PanelCenterSpectacleResponsable panelCenter = new PanelCenterSpectacleResponsable(spectacle.getNom());
+		panelCenter.getBtnAjout().addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SimpleDateFormat df = new SimpleDateFormat("jj/mm/aaaa");
+				try{
+					Date date = df.parse(panelCenter.getTxtDate().getText());
+					int heure = Integer.parseInt(panelCenter.getTxtHeure().getText());
+					Salle salle = controleurPrincipal.getDatabaseManager().selectSalle(1);
+					Representation representation = new Representation(date, heure, salle, spectacle);
+					controleurPrincipal.getDatabaseManager().insertRepresentation(representation);
+				}
+				catch(ParseException ex){
+					
+				}
+			}
+		});
 		this.controleurPrincipal.getVue().setCenter(panelCenter);
 		LinkedList<Representation> representations = this.controleurPrincipal.getDatabaseManager().selectRepresentations(spectacle);
 		majListeRepresentations(panelCenter, representations);
