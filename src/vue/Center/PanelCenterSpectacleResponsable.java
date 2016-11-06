@@ -18,6 +18,7 @@ public class PanelCenterSpectacleResponsable extends PanelCenter {
 	private int lig;
 	
 	public PanelCenterSpectacleResponsable(String nom) {
+		this.init();
 		JLabel lblNomDuSpectacle = new JLabel("Nom du spectacle");
 		lblNomDuSpectacle.setFont(new Font("Arial", Font.PLAIN, 16));
 		panel_titre.add(lblNomDuSpectacle);

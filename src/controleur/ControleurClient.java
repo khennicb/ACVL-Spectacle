@@ -45,24 +45,24 @@ public class ControleurClient extends ControleurUtilisateur {
 				if(item != null){
 					panelCenterHome.viderListeSpectacle();
 					LinkedList<Spectacle> spectacles = controleurPrincipal.getDatabaseManager().selectAllSpectacleByTheme(item.getIndex());
-					((ControleurClient)ControleurClient.instance()).ajouterSpectacleVue(panelCenterHome, spectacles);
+					ControleurClient.instance().majListeSpectacles(panelCenterHome, spectacles);
 					controleurPrincipal.getVue().show();
 				}
 				else{
 					panelCenterHome.viderListeSpectacle();
 					LinkedList<Spectacle> spectacles = controleurPrincipal.getDatabaseManager().selectAllSpectacle();
-					((ControleurClient)ControleurClient.instance()).ajouterSpectacleVue(panelCenterHome, spectacles);
+					ControleurClient.instance().majListeSpectacles(panelCenterHome, spectacles);
 					controleurPrincipal.getVue().show();
 				}
 			}
 		});		
 		this.controleurPrincipal.getVue().setCenter(panelCenterHome);
 		LinkedList<Spectacle> spectacles =  this.controleurPrincipal.getDatabaseManager().selectAllSpectacle();
-		this.ajouterSpectacleVue(panelCenterHome, spectacles);
+		this.majListeSpectacles(panelCenterHome, spectacles);
 		this.controleurPrincipal.getVue().show();
 	}
 	
-	public void ajouterSpectacleVue(PanelCenterListeSpectacles panelCenter, LinkedList<Spectacle> spectacles){
+	public void majListeSpectacles(PanelCenterListeSpectacles panelCenter, LinkedList<Spectacle> spectacles){
 		for(Spectacle s : spectacles) {
 			JButton btnSpectacle = panelCenter.ajoutElmtListeSpectacle(s.getNom());
 			btnSpectacle.addActionListener(new ActionListener(){
