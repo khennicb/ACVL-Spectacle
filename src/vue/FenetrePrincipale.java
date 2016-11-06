@@ -29,11 +29,11 @@ public class FenetrePrincipale extends Fenetre {
 	 */
 	private void initialize() { 
 		frame.setBounds(100, 100, 680, 566);
-		frame.getContentPane().setLayout(new BorderLayout(0, 0));
+		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.getContentPane().setLayout(new BorderLayout(0, 0));
 		frame.getContentPane().add(this.header.getPanel(), BorderLayout.NORTH);
 		frame.getContentPane().add(this.center.getPanel(), BorderLayout.CENTER);
-		this.center.getPanel().setLayout(new GridLayout(1, 0, 0, 0));
 	}
 	
 	
@@ -54,16 +54,15 @@ public class FenetrePrincipale extends Fenetre {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					final FenetrePrincipale window = new FenetrePrincipale(new PanelHeaderConnexion(), new PanelCenterListeSpectacles(tab) );
+					PanelCenter test = new PanelCenterConnexion();
+					final FenetrePrincipale window = new FenetrePrincipale(new PanelHeaderClient(), test );
 					window.show();
 					
-					PanelCenter test = new PanelCenterConnexion();
-					((PanelCenterConnexion)test).setWarningConnexion("Mot de passe ou login incorrecte");
-					window.setCenter(test);
+					PanelCenter t = new PanelCenterListeSpectacles(tab);
 					((PanelCenterConnexion)window.getCenter()).getBtnConnexion().addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
-							window.setHeader(new PanelHeaderUser());
+							window.setCenter(t);
 						}
 					});
 					//window.setHeader(new PanelHeaderUser());

@@ -37,13 +37,12 @@ public class PanelCenterListeSpectacles extends PanelCenter {
 		
 		JComboBox<String> comboBox_filtres = new JComboBox<String>();
 		comboBox_filtres.setModel(new DefaultComboBoxModel<String>(filtres));
-		comboBox_filtres.setToolTipText("Test\r\n");
+		comboBox_filtres.setToolTipText("Filtre\r\n");
 		panel_filtre.add(comboBox_filtres);
 		
 		panel_liste = new JPanel();
 		panel_content.add(panel_liste, BorderLayout.CENTER);
 		panel_liste.setLayout(new MigLayout());
-		
 		lig=0;
 		col=0;
 	}
