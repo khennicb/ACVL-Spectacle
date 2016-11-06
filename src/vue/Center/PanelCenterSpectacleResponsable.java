@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.util.Date;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -16,6 +17,7 @@ public class PanelCenterSpectacleResponsable extends PanelCenter {
 	private JTextField txtheure;
 	private JPanel panel_ListeRepresentation;
 	private int lig;
+	private JComboBox comboBoxSalle;
 	
 	public PanelCenterSpectacleResponsable(String nom) {
 		this.init();
@@ -54,6 +56,12 @@ public class PanelCenterSpectacleResponsable extends PanelCenter {
 		txtheure.setText("HH  ");
 		panel_ajoutRepresentation.add(txtheure, "cell 2 0");
 		txtheure.setColumns(10);
+		
+		JLabel lblSalle = new JLabel("Salle:");
+		panel_ajoutRepresentation.add(lblSalle, "cell 2 0");
+		
+		comboBoxSalle = new JComboBox();
+		panel_ajoutRepresentation.add(comboBoxSalle, "cell 2 0");
 		
 		JButton btnAjout = new JButton("Ajout");
 		panel_ajoutRepresentation.add(btnAjout, "cell 2 0");
