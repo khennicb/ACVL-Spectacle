@@ -25,6 +25,10 @@ public class Fenetre {
 		this.frame.setVisible(true);
 	}
 	
+	public JFrame getFrame() {
+		return frame;
+	}
+
 	public PanelCenter getCenter() {
 		return center;
 	}

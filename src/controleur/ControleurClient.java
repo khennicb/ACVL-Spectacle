@@ -1,8 +1,10 @@
 package controleur;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
+import javax.swing.JButton;
+
+import modele.Spectacle;
 import modele.Theme;
 import vue.Center.PanelCenterListeSpectacles;
 import vue.Header.PanelHeaderClient;
@@ -25,5 +27,12 @@ public class ControleurClient extends ControleurUtilisateur {
 		}
 		PanelCenterListeSpectacles panelCenterHome = new PanelCenterListeSpectacles((String[]) filtres);
 		this.controleurPrincipal.getVue().setCenter(panelCenterHome);
+		LinkedList<Spectacle> spectacles =  this.controleurPrincipal.getDatabaseManager().selectAllSpectacle();
+		for(Spectacle s : spectacles) {
+			JButton btnSpectacle = panelCenterHome.ajoutElmtListeSpectacle(s.getNom());
+			System.out.println(s.getNom());
+			//TODO controleur btnSpectacle
+		}
+		this.controleurPrincipal.getVue().show();
 	}
 }

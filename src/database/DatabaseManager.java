@@ -8,6 +8,7 @@ import java.sql.*;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import modele.*;
 
 /**
@@ -686,7 +687,47 @@ public void insertDossier(Dossier dossier){
         return list;
     }
     
-    public LinkedList<Representation> selectRepresentations(Spectacle spectacle){
+    public boolean isUtilisateurEmpty(){
+        boolean toReturn =false;
+        
+        try {
+            ResultSet rs = statement.executeQuery( "SELECT * FROM UTILISATEUR;" );
+            toReturn = !rs.next();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
+    }
+    
+    public boolean isSpectacleEmpty(){
+        boolean toReturn =false;
+        
+        try {
+            ResultSet rs = statement.executeQuery( "SELECT * FROM SPECTACLE;" );
+            toReturn = !rs.next();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
+    }
+    
+    public boolean isThemeEmpty(){
+        boolean toReturn =false;
+        
+        try {
+            ResultSet rs = statement.executeQuery( "SELECT * FROM THEME;" );
+            toReturn = !rs.next();
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return toReturn;
+    }
+    
+    @SuppressWarnings("deprecation")
+	public LinkedList<Representation> selectRepresentations(Spectacle spectacle){
         LinkedList<Representation> list = new LinkedList<>();
         
         try {

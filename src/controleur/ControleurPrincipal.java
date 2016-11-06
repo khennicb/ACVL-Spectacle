@@ -9,6 +9,8 @@ package controleur;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -32,12 +34,8 @@ public class ControleurPrincipal {
     private DatabaseManager dm;
     
     public ControleurPrincipal() {
-    	dm = DatabaseManager.getDatabaseManager();
-    	dm.connect();
-    	dm.createTables();
-    	
+    	this.initDataBase();
     	vue = new FenetrePrincipale(new PanelHeaderConnexion(), new PanelCenterConnexion() );
-    	
     	EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -47,9 +45,7 @@ public class ControleurPrincipal {
 				}
 			}
 		});
-    	
-    	System.out.println(((PanelCenterConnexion)(vue.getCenter())));
-    	
+    	    	
     	((PanelCenterConnexion)(vue.getCenter())).getBtnConnexion().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -85,19 +81,13 @@ public class ControleurPrincipal {
 				//inscription
 				if(!login.isEmpty() && !nom.isEmpty() && !email.isEmpty() && !prenom.isEmpty() && !motDePasse.isEmpty()) {
 					if(motDePasse.equals(motDePasseConfirm)) {
-						try {
-							MessageDigest md = MessageDigest.getInstance("MD5");
-					    	byte[] mdpCrypte = md.digest(motDePasse.getBytes("UTF-8"));
-							Utilisateur utilisateur = new Client(login, mdpCrypte.toString(), nom, prenom, email);
-							dm.insertUtilisateur(utilisateur);
-							userControleur = ControleurClient.instance();
-				    		userControleur.setUtilisateurCourant(utilisateur);
-				    		userControleur.setControleurPrincipal(cp);
-				    		userControleur.loadHome();
-						} catch (UnsupportedEncodingException
-								| NoSuchAlgorithmException e1) {
-							e1.printStackTrace();
-						}
+						Utilisateur utilisateur = new Client(login, motDePasse, nom, prenom, email);
+						dm.insertUtilisateur(utilisateur);
+						userControleur = ControleurClient.instance();
+			    		userControleur.setUtilisateurCourant(utilisateur);
+			    		userControleur.setControleurPrincipal(cp);
+			    		userControleur.loadHome();
+						
 					} else {
 						((PanelCenterConnexion)(vue.getCenter())).setWarningInscription("Les deux mots de passe sont différents");
 					}
@@ -108,6 +98,11 @@ public class ControleurPrincipal {
 			}
 		});
     	
+    	vue.getFrame().addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e){
+               dm.close();
+            }
+          });
     	
     }
        
@@ -135,11 +130,10 @@ public class ControleurPrincipal {
     	if(login.isEmpty() || motDePasse.isEmpty()){
     		return false;
     	}
-    	//verification base de donnees
-    	MessageDigest md = MessageDigest.getInstance("MD5");
-    	byte[] mdpCrypte = md.digest(motDePasse.getBytes("UTF-8"));
     	
-    	Utilisateur utilisateur = dm.selectUtilisateur(login, mdpCrypte.toString());
+    	//verification base de donnees
+    	Utilisateur utilisateur = dm.selectUtilisateur(login, motDePasse);
+    	
     	if(utilisateur == null) {
     		return false;
     	}
@@ -169,7 +163,40 @@ public class ControleurPrincipal {
 	
 	
 	public static void main(String [] args) {
-		ControleurPrincipal resaSpectacle = new ControleurPrincipal();
+			ControleurPrincipal resaSpectacle = new ControleurPrincipal();
+
+	}
+	
+	private void initDataBase() {
+		dm = DatabaseManager.getDatabaseManager();
+    	dm.connect();
+    	dm.dropAllTable();
+    	dm.createTables();
+    	
+    	//verifier si la table utilisateur est vide
+    	if(dm.isUtilisateurEmpty()){
+    		System.out.println("Utilisateur empty");
+    		dm.insertUtilisateur(new ResponsableProgrammation("admin", "admin"));
+    		//insertion de client
+    		dm.insertUtilisateur(new Client("login_1","mdp1" , "Bernard", "Nia", "totodu38@tes_pa_bo.fr"));
+    		dm.insertUtilisateur(new Client("login_2","mdp2" , "Bruno", "Frage", "xxxdark59@skyfighter.fr"));
+    	}
+    	//verifier si theme est vide
+    	if(dm.isThemeEmpty()){
+    		dm.insertTheme(new Theme("Sauvetage des licornes"));
+    		dm.insertTheme(new Theme("Contemplation du ciel"));
+    	}
+    	//verifier si la table spectacle est vide
+    	if(dm.isSpectacleEmpty()){
+    		dm.insertSpectacle(new Spectacle(1, "Comment carresser l animal", "Demonstration de carressage avancé de ces animaux magiques", dm.selectTheme(1)));
+    		Theme t = dm.selectTheme(2);
+    		System.out.println(t.getNom());
+    		dm.insertSpectacle(new Spectacle(1, "L'interpolation des nuages", "Exposé surprennant des théorême de visualisation des spectre nuageux", t));
+    	}
+    	//verifier si la table representation est vide
+    	//verifier si la table salle est vide
+    	//verifier si la table place est vide
+    	
 	}
     
 }
