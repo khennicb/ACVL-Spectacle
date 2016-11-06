@@ -113,7 +113,7 @@ public class PageSpectacleClient {
 		flowLayout.setAlignment(FlowLayout.LEFT);
 		panel_center.add(panel_titre, BorderLayout.NORTH);
 		
-		JLabel lblTitreSpectacle = new JLabel("Nom du spectacle");
+		JLabel lblTitreSpectacle = new JLabel("Spectacle des oisillons chantant");
 		lblTitreSpectacle.setFont(new Font("Arial", Font.PLAIN, 16));
 		panel_titre.add(lblTitreSpectacle);
 		
@@ -150,7 +150,7 @@ public class PageSpectacleClient {
 		
 		JTextPane txtpnl_description = new JTextPane();
 		txtpnl_description.setBackground(UIManager.getColor("menu"));
-		txtpnl_description.setText("jhvhjuvhjvhjvhjjvjhvhj hbbbbbbbbbbbbbbbbbbbb gvvvvvvvvvvvvvvvvvvv Un parc d'attractions peupl\u00E9 de robots propose aux visiteurs de se replonger dans plusieurs \u00E9poques. Lanc\u00E9s dans l'ouest sauvage, deux amis se retrouvent plong\u00E9s en plein cauchemar quand l'un des andro\u00EFdes se d\u00E9traque et les prend en chasse...\r\nUn parc d'attractions peupl\u00E9 de robots propose aux visiteurs de se replonger dans plusieurs \u00E9poques. Lanc\u00E9s dans l'ouest sauvage, deux amis se retrouvent plong\u00E9s en plein cauchemar quand l'un des andro\u00EFdes se d\u00E9traque et les prend en chasse...\r\nUn parc d'attractions peupl\u00E9 de robots propose aux visiteurs de se replonger dans plusieurs \u00E9poques. Lanc\u00E9s dans l'ouest sauvage, deux amis se retrouvent plong\u00E9s en plein cauchemar quand l'un des andro\u00EFdes se d\u00E9traque et les prend en chasse...\r\nUn parc d'attractions peupl\u00E9 de robots propose aux visiteurs de se replonger dans plusieurs \u00E9poques. Lanc\u00E9s dans l'ouest sauvage, deux amis se retrouvent plong\u00E9s en plein cauchemar quand l'un des andro\u00EFdes se d\u00E9traque et les prend en chasse...\r\nUn parc d'attractions peupl\u00E9 de robots propose aux visiteurs de se replonger dans plusieurs \u00E9poques. Lanc\u00E9s dans l'ouest sauvage, deux amis se retrouvent plong\u00E9s en plein cauchemar quand l'un des andro\u00EFdes se d\u00E9traque et les prend en chasse...\r\n");
+		txtpnl_description.setText("Lanc\u00E9s dans l'ouest sauvage, deux amis se retrouvent plong\u00E9s en plein cauchemar quand l'un des andro\u00EFdes se d\u00E9traque et les prend en chasse...\r\nUn parc d'attractions peupl\u00E9 de robots propose aux visiteurs de se replonger dans plusieurs \u00E9poques. \r\n");
 		panel_description_content.add(txtpnl_description);
 		
 		JPanel panel_listeRepresentation = new JPanel();
@@ -177,7 +177,7 @@ public class PageSpectacleClient {
 		panel_listeRepresentation.add(panel_representation_1, gbc_panel_representation_1);
 		panel_representation_1.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		JLabel lblDateHeure = new JLabel("Date - heure");
+		JLabel lblDateHeure = new JLabel("10/01/2016 - 20H");
 		panel_representation_1.add(lblDateHeure);
 		
 		JButton btnAcheter = new JButton("Acheter");
@@ -194,7 +194,7 @@ public class PageSpectacleClient {
 		panel_listeRepresentation.add(panel_representation_2, gbc_panel_representation_2);
 		panel_representation_2.setLayout(new GridLayout(1, 0, 0, 0));
 		
-		JLabel lblDateheure = new JLabel("Date-heure");
+		JLabel lblDateheure = new JLabel("10/01/2016 - 22H");
 		panel_representation_2.add(lblDateheure);
 		
 		JButton btnAcheter_1 = new JButton("Acheter");

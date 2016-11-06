@@ -56,7 +56,7 @@ public class Achat {
 		JPanel panel = new JPanel();
 		frame.getContentPane().add(panel, BorderLayout.NORTH);
 		
-		JLabel lblNomSpectacle = new JLabel("Nom spectacle - date heure");
+		JLabel lblNomSpectacle = new JLabel("Spectacle des oisillons chantant - 10/01/2016 - 20H");
 		lblNomSpectacle.setFont(new Font("Arial", Font.PLAIN, 16));
 		panel.add(lblNomSpectacle);
 		
@@ -70,7 +70,7 @@ public class Achat {
 		JSpinner spinner = new JSpinner();
 		panel_1.add(spinner, "cell 1 0");
 		
-		JLabel lblTotal = new JLabel("Total:");
+		JLabel lblTotal = new JLabel("Prix total :");
 		panel_1.add(lblTotal, "cell 3 0");
 		
 		JLabel label = new JLabel("40");

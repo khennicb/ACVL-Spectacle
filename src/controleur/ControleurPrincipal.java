@@ -171,7 +171,6 @@ public class ControleurPrincipal {
 	private void initDataBase() {
 		dm = DatabaseManager.getDatabaseManager();
     	dm.connect();
-    	dm.dropAllTable();
     	dm.createTables();
     	
     	//verifier si la table utilisateur est vide

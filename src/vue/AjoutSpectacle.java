@@ -120,7 +120,7 @@ public class AjoutSpectacle {
 		panel_content.add(lblThme, "cell 0 1,alignx trailing");
 		
 		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"test", "bfhizeh"}));
+		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Danse", "bfhizeh"}));
 		panel_content.add(comboBox, "flowx,cell 1 1,growx");
 		
 		JLabel lblDescription = new JLabel("Description:");
