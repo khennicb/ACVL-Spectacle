@@ -76,7 +76,7 @@ public class ControleurClient extends ControleurUtilisateur {
 	@Override
 	public void loadDetailSpectacle(int numeroSpectacle){
 		Spectacle spectacle = this.controleurPrincipal.getDatabaseManager().selectSpectacle(numeroSpectacle);
-		PanelCenterSpectacleClient panelCenter = new PanelCenterSpectacleClient(spectacle.getNom(), spectacle.getDescription());//, spectacle.getTheme().getNom());
+		PanelCenterSpectacleClient panelCenter = new PanelCenterSpectacleClient(spectacle.getNom(), spectacle.getDescription(), spectacle.getTheme().getNom());
 		this.controleurPrincipal.getVue().setCenter(panelCenter);
 	}
 }
