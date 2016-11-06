@@ -30,8 +30,9 @@ public class ControleurClient extends ControleurUtilisateur {
 			}});
 		this.controleurPrincipal.getVue().setHeader(header);
 		LinkedList<Theme> themes = this.controleurPrincipal.getDatabaseManager().selectAllTheme();
-		ComboBoxElement[] filtres = new ComboBoxElement[100];
-		int i = 0;
+		ComboBoxElement[] filtres = new ComboBoxElement[themes.size() + 1];
+		int i = 1;
+		filtres[0] = null;
 		for(Theme theme: themes){
 			filtres[i] = new ComboBoxElement(theme.getNumero(),theme.getNom());
 			i++;
@@ -45,11 +46,13 @@ public class ControleurClient extends ControleurUtilisateur {
 					panelCenterHome.viderListeSpectacle();
 					LinkedList<Spectacle> spectacles = controleurPrincipal.getDatabaseManager().selectAllSpectacleByTheme(item.getIndex());
 					((ControleurClient)ControleurClient.instance()).ajouterSpectacleVue(panelCenterHome, spectacles);
+					controleurPrincipal.getVue().show();
 				}
 				else{
 					panelCenterHome.viderListeSpectacle();
 					LinkedList<Spectacle> spectacles = controleurPrincipal.getDatabaseManager().selectAllSpectacle();
 					((ControleurClient)ControleurClient.instance()).ajouterSpectacleVue(panelCenterHome, spectacles);
+					controleurPrincipal.getVue().show();
 				}
 			}
 		});		
