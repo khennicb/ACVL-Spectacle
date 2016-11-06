@@ -34,6 +34,12 @@ public class ControleurResponsable extends ControleurUtilisateur {
 			public void actionPerformed(ActionEvent e) {
 				ControleurResponsable.instance().loadHome();				
 			}});
+		header.getBtnDeconnexion().addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				controleurPrincipal.deconnexion();
+			}
+		});
 		this.controleurPrincipal.getVue().setHeader(header);
 		LinkedList<Theme> themes = this.controleurPrincipal.getDatabaseManager().selectAllTheme();
 		ComboBoxElement[] filtres = new ComboBoxElement[themes.size() + 1];

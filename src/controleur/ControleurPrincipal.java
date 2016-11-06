@@ -44,8 +44,19 @@ public class ControleurPrincipal {
 					e.printStackTrace();
 				}
 			}
-		});
-    	    	
+		}); 	
+    	
+    	setConnexionListeners();
+    	
+    	vue.getFrame().addWindowListener(new WindowAdapter(){
+            public void windowClosing(WindowEvent e){
+               dm.close();
+            }
+          });
+    	
+    }
+       
+    public void setConnexionListeners(){
     	((PanelCenterConnexion)(vue.getCenter())).getBtnConnexion().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -65,8 +76,7 @@ public class ControleurPrincipal {
 			}
 		});
     	
-    	final ControleurPrincipal cp = this;
-    	
+    	final ControleurPrincipal cp = this;   
     	((PanelCenterConnexion)(vue.getCenter())).getBtnInscription().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -97,15 +107,7 @@ public class ControleurPrincipal {
 				
 			}
 		});
-    	
-    	vue.getFrame().addWindowListener(new WindowAdapter(){
-            public void windowClosing(WindowEvent e){
-               dm.close();
-            }
-          });
-    	
     }
-       
     public void addSpectacle(){
         // TODO
     }
@@ -153,6 +155,12 @@ public class ControleurPrincipal {
     	
     }
     
+    public void deconnexion(){
+    	userControleur = null;
+    	this.vue.setHeader(new PanelHeaderConnexion());
+    	this.vue.setCenter(new PanelCenterConnexion());
+    	this.setConnexionListeners();
+    }
     public FenetrePrincipale getVue() {
 		return vue;
 	}
