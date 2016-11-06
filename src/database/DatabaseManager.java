@@ -645,13 +645,30 @@ public void insertDossier(Dossier dossier){
         return spectacle;
     }
     
-    
     public LinkedList<Spectacle> selectAllSpectacle(){
         LinkedList<Spectacle> list = new LinkedList<>();
         
         try {
            statement = connection.createStatement(); 
            ResultSet rs = statement.executeQuery( "SELECT * FROM SPECTACLE" );
+            while ( rs.next() ) {
+               Spectacle spectacle = new Spectacle(rs.getInt("SPECTACLE_ID"), rs.getString("NOM"), rs.getString("DESCRIPTION"), selectTheme(rs.getInt("THEME")));
+               list.push(spectacle);
+            }
+            rs.close();
+        } catch (SQLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    public LinkedList<Spectacle> selectAllSpectacleByTheme(int themeId){
+        LinkedList<Spectacle> list = new LinkedList<>();
+        
+        try {
+           statement = connection.createStatement(); 
+           ResultSet rs = statement.executeQuery( "SELECT * FROM SPECTACLE WHERE THEME = "+themeId+";" );
             while ( rs.next() ) {
                Spectacle spectacle = new Spectacle(rs.getInt("SPECTACLE_ID"), rs.getString("NOM"), rs.getString("DESCRIPTION"), selectTheme(rs.getInt("THEME")));
                list.push(spectacle);

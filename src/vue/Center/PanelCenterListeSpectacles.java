@@ -67,6 +67,10 @@ public class PanelCenterListeSpectacles extends PanelCenter {
 		return btnSpectacle;
 	}
 	
+	public void viderListeSpectacle(){
+		panel_liste.removeAll();
+	}
+	
 	public JComboBox<ComboBoxElement> getComboBoxFiltres(){
 		return comboBox_filtres;
 	}

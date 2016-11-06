@@ -37,23 +37,43 @@ public class ControleurClient extends ControleurUtilisateur {
 			i++;
 		}
 		PanelCenterListeSpectacles panelCenterHome = new PanelCenterListeSpectacles(filtres);
+		panelCenterHome.getComboBoxFiltres().addActionListener(new ActionListener() {			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				ComboBoxElement item = (ComboBoxElement)panelCenterHome.getComboBoxFiltres().getSelectedItem();
+				if(item != null){
+					panelCenterHome.viderListeSpectacle();
+					LinkedList<Spectacle> spectacles = controleurPrincipal.getDatabaseManager().selectAllSpectacleByTheme(item.getIndex());
+					((ControleurClient)ControleurClient.instance()).ajouterSpectacleVue(panelCenterHome, spectacles);
+				}
+				else{
+					panelCenterHome.viderListeSpectacle();
+					LinkedList<Spectacle> spectacles = controleurPrincipal.getDatabaseManager().selectAllSpectacle();
+					((ControleurClient)ControleurClient.instance()).ajouterSpectacleVue(panelCenterHome, spectacles);
+				}
+			}
+		});		
 		this.controleurPrincipal.getVue().setCenter(panelCenterHome);
 		LinkedList<Spectacle> spectacles =  this.controleurPrincipal.getDatabaseManager().selectAllSpectacle();
+		this.ajouterSpectacleVue(panelCenterHome, spectacles);
+		this.controleurPrincipal.getVue().show();
+	}
+	
+	public void ajouterSpectacleVue(PanelCenterListeSpectacles panelCenter, LinkedList<Spectacle> spectacles){
 		for(Spectacle s : spectacles) {
-			JButton btnSpectacle = panelCenterHome.ajoutElmtListeSpectacle(s.getNom());
+			JButton btnSpectacle = panelCenter.ajoutElmtListeSpectacle(s.getNom());
 			btnSpectacle.addActionListener(new ActionListener(){
 				@Override
 				public void actionPerformed(ActionEvent arg0) {
 					ControleurClient.instance().loadDetailSpectacle(s.getNumero());					
 				}});
 		}
-		this.controleurPrincipal.getVue().show();
 	}
 	
 	@Override
 	public void loadDetailSpectacle(int numeroSpectacle){
 		Spectacle spectacle = this.controleurPrincipal.getDatabaseManager().selectSpectacle(numeroSpectacle);
-		PanelCenterSpectacleClient panelCenter = new PanelCenterSpectacleClient(spectacle.getNom(), spectacle.getDescription());
+		PanelCenterSpectacleClient panelCenter = new PanelCenterSpectacleClient(spectacle.getNom(), spectacle.getDescription());//, spectacle.getTheme().getNom());
 		this.controleurPrincipal.getVue().setCenter(panelCenter);
 	}
 }
