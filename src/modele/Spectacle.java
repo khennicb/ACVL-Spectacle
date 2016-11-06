@@ -19,6 +19,13 @@ public class Spectacle {
         this.theme = theme;
         this.representations = new ArrayList<Representation>();
     }
+    
+    public Spectacle(String nom, String description, Theme theme) {
+        this.nom = nom;
+        this.description = description;
+        this.theme = theme;
+        this.representations = new ArrayList<Representation>();
+    }
 
     public void setNumero(int numero) {
         this.numero = numero;
