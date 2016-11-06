@@ -99,7 +99,7 @@ public class PageSpectacleAdmin {
 		flowLayout.setAlignment(FlowLayout.LEFT);
 		panel.add(panel_titre, BorderLayout.NORTH);
 		
-		JLabel lblNomDuSpectacle = new JLabel("Nom du spectacle");
+		JLabel lblNomDuSpectacle = new JLabel("Chorégraphie des caribous");
 		lblNomDuSpectacle.setFont(new Font("Arial", Font.PLAIN, 16));
 		panel_titre.add(lblNomDuSpectacle);
 		
@@ -131,7 +131,7 @@ public class PageSpectacleAdmin {
 		
 		txtheure = new JTextField();
 		lblHeure.setLabelFor(txtheure);
-		txtheure.setText("HH:MM  ");
+		txtheure.setText("HH  ");
 		panel_ajoutRepresentation.add(txtheure, "cell 2 0");
 		txtheure.setColumns(10);
 		
@@ -160,11 +160,11 @@ public class PageSpectacleAdmin {
 		lblRservations.setFont(new Font("Arial", Font.PLAIN, 14));
 		panel_ListeRepresentation.add(lblRservations, "cell 2 0");
 		
-		JLabel lblDateHeure = new JLabel("Date - heure");
+		JLabel lblDateHeure = new JLabel("10/01/16 - 19H");
 		lblDateHeure.setFont(new Font("Arial", Font.PLAIN, 12));
 		panel_ListeRepresentation.add(lblDateHeure, "cell 0 1");
 		
-		JLabel lblNbreVentes = new JLabel("12");
+		JLabel lblNbreVentes = new JLabel("  12");
 		panel_ListeRepresentation.add(lblNbreVentes, "cell 1 1");
 		
 		btnNbrReservation = new JButton("10");

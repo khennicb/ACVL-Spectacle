@@ -126,10 +126,10 @@ public class ListeSpectacle {
 		panel_content.add(panel_liste, BorderLayout.CENTER);
 		panel_liste.setLayout(new MigLayout("", "[][]", "[]"));
 		
-		JButton btnSpectacle = new JButton("Spectacle_1");
+		JButton btnSpectacle = new JButton("Spectacle des oisillons chantant");
 		panel_liste.add(btnSpectacle, "cell 0 0");
 		
-		JButton btnSpectacle_1 = new JButton("Spectacle_2");
+		JButton btnSpectacle_1 = new JButton("Spectacle du buveur de sable");
 		panel_liste.add(btnSpectacle_1, "cell 1 0");
 	}
 

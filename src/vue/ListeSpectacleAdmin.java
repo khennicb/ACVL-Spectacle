@@ -115,7 +115,7 @@ public class ListeSpectacleAdmin {
 		panel_filtre.add(lblFiltres);
 		
 		JComboBox comboBox_filtres = new JComboBox();
-		comboBox_filtres.setModel(new DefaultComboBoxModel(new String[] {"Test", "Test2"}));
+		comboBox_filtres.setModel(new DefaultComboBoxModel(new String[] {"Danse", "Test2"}));
 		comboBox_filtres.setToolTipText("Test\r\n");
 		panel_filtre.add(comboBox_filtres);
 		
@@ -123,10 +123,10 @@ public class ListeSpectacleAdmin {
 		panel_content.add(panel_liste, BorderLayout.CENTER);
 		panel_liste.setLayout(new MigLayout("", "[][]", "[]"));
 		
-		JButton btnSpectacle = new JButton("Spectacle_1");
+		JButton btnSpectacle = new JButton("Chorégraphie des caribous");
 		panel_liste.add(btnSpectacle, "cell 0 0");
 		
-		JButton btnSpectacle_1 = new JButton("Spectacle_2");
+		JButton btnSpectacle_1 = new JButton("Ballet du dimanche");
 		panel_liste.add(btnSpectacle_1, "cell 1 0");
 	}
 
