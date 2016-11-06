@@ -50,7 +50,7 @@ public class FenetrePrincipale extends Fenetre {
 
 	
 	public static void main (String [] args) {
-		final String [] tab = {"test"};
+		final ComboBoxElement [] tab = {new ComboBoxElement(0, "test")};
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

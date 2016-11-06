@@ -6,6 +6,7 @@ import java.util.LinkedList;
 
 import modele.Spectacle;
 import modele.Theme;
+import vue.ComboBoxElement;
 import vue.Center.PanelCenterListeSpectacles;
 import vue.Center.PanelCenterSpectacleClient;
 import vue.Center.PanelCenterSpectacleResponsable;
@@ -29,13 +30,13 @@ public class ControleurResponsable extends ControleurUtilisateur {
 			}});
 		this.controleurPrincipal.getVue().setHeader(header);
 		LinkedList<Theme> themes = this.controleurPrincipal.getDatabaseManager().selectAllTheme();
-		String[] filtres = new String[100];
+		ComboBoxElement[] filtres = new ComboBoxElement[100];
 		int i = 0;
 		for(Theme theme: themes){
-			filtres[i] = (theme.getNom());
+			filtres[i] = new ComboBoxElement(theme.getNumero(), theme.getNom());
 			i++;
 		}
-		PanelCenterListeSpectacles panelCenterHome = new PanelCenterListeSpectacles((String[]) filtres);
+		PanelCenterListeSpectacles panelCenterHome = new PanelCenterListeSpectacles(filtres);
 		this.controleurPrincipal.getVue().setCenter(panelCenterHome);
 	}
 	

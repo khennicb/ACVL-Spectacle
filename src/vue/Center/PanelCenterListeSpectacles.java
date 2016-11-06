@@ -12,13 +12,15 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import net.miginfocom.swing.MigLayout;
+import vue.ComboBoxElement;
 
 public class PanelCenterListeSpectacles extends PanelCenter {
 	private JPanel panel_liste;
+	private JComboBox<ComboBoxElement> comboBox_filtres;
 	private int col;
 	private int lig;
 	
-	public PanelCenterListeSpectacles(String [] filtres) {
+	public PanelCenterListeSpectacles(ComboBoxElement[] filtres) {
 		this.init();
 		
 		JLabel lblSpectaclesVenir = new JLabel("Spectacles \u00E0 venir");
@@ -35,8 +37,8 @@ public class PanelCenterListeSpectacles extends PanelCenter {
 		lblFiltres.setHorizontalAlignment(SwingConstants.LEFT);
 		panel_filtre.add(lblFiltres);
 		
-		JComboBox<String> comboBox_filtres = new JComboBox<String>();
-		comboBox_filtres.setModel(new DefaultComboBoxModel<String>(filtres));
+		comboBox_filtres = new JComboBox<ComboBoxElement>();
+		comboBox_filtres.setModel(new DefaultComboBoxModel<ComboBoxElement>(filtres));
 		comboBox_filtres.setToolTipText("Filtre\r\n");
 		panel_filtre.add(comboBox_filtres);
 		
@@ -63,5 +65,9 @@ public class PanelCenterListeSpectacles extends PanelCenter {
 		}
 		
 		return btnSpectacle;
+	}
+	
+	public JComboBox<ComboBoxElement> getComboBoxFiltres(){
+		return comboBox_filtres;
 	}
 }
