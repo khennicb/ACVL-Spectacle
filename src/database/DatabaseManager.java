@@ -378,7 +378,7 @@ public class DatabaseManager {
             if (rs != null && rs.next()) {
                 key = (int)rs.getLong(1);
             }
-            
+            System.out.println("key : " + key);
             spectacle.setNumero(key);
 
         } catch (SQLException e) {
@@ -590,7 +590,7 @@ public void insertDossier(Dossier dossier){
                 theme  = new Theme(rs.getString("nom"));
                 theme.setNumero(theme_id);
             }
-        
+            rs.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -638,12 +638,12 @@ public void insertDossier(Dossier dossier){
         LinkedList<Spectacle> list = new LinkedList<>();
         
         try {
-            ResultSet rs = statement.executeQuery( "SELECT * FROM SPECTACLE;" );
+            ResultSet rs = statement.executeQuery( "SELECT * FROM SPECTACLE" );
             while ( rs.next() ) {
                 Spectacle spectacle = new Spectacle(rs.getInt("SPECTACLE_ID"), rs.getString("NOM"), rs.getString("DESCRIPTION"), selectTheme(rs.getInt("THEME")));
                 list.push(spectacle);
             }
-        
+            rs.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -679,7 +679,7 @@ public void insertDossier(Dossier dossier){
                 theme.setNumero(rs.getInt("THEME_ID"));
                 list.push(theme);
             }
-        
+            rs.close();
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
