@@ -147,8 +147,8 @@ public class ControleurResponsable extends ControleurUtilisateur {
 	
 	public void majListeRepresentations(PanelCenterSpectacleResponsable panelCenter, LinkedList<Representation> representations){
 		for(Representation r : representations) {
-			int nbBillet = 0;
-			int nbReserv = 0;
+			int nbBillet = controleurPrincipal.getDatabaseManager().countBilletRepresentation(r);
+			int nbReserv = controleurPrincipal.getDatabaseManager().countReservationRepresentation(r);
 			JButton btnSpectacle = panelCenter.ajoutElmtRepresentation(r.getDate(), r.getHeure(), nbBillet, nbReserv);
 			btnSpectacle.addActionListener(new ActionListener(){
 				@Override

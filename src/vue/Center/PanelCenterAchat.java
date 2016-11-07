@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import javafx.scene.control.ComboBox;
+import net.miginfocom.swing.MigLayout;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -15,7 +16,7 @@ import javax.swing.JTextField;
 import vue.ComboBoxElement;
 
 public class PanelCenterAchat extends PanelCenter {
-	private ArrayList<ArrayList<JComboBox<Integer>>> listePlace;
+	private ArrayList<PlaceObject> listePlace;
 	private JTextField textField_numeroCB;
 	private JTextField textField_Code;
 	private JTextField textField_DateExpi;
@@ -28,6 +29,8 @@ public class PanelCenterAchat extends PanelCenter {
 	private JComboBox<ComboBoxElement> comboBox_cat;
 	
 	public PanelCenterAchat(ComboBoxElement[] cat) {
+		//TODO : le mig layout est cassé
+		//panel.setLayout(new MigLayout("", "[][grow][grow][][grow]", "[][][][][grow][]"));
 		panel.add(new JLabel("Nombre de place:"), "cell 0 0");
 		
 		spinner = new JSpinner();
@@ -68,14 +71,48 @@ public class PanelCenterAchat extends PanelCenter {
 		btnValider = new JButton("Valider");
 		panel.add(btnValider, "cell 4 5");
 		
-		listePlace = new ArrayList<ArrayList<JComboBox<Integer>>>();
+		listePlace = new ArrayList<PlaceObject>();
 	}
 	
+	public class PlaceObject{
+		JLabel lblPlace;
+		JLabel lblRang;
+		JLabel lblNumero;
+		JComboBox<Integer> comboBox_1;
+		JComboBox<Integer> comboBox_2;
+		public PlaceObject(){
+			lblPlace = new JLabel("Place " + (listePlace.size() + 1) +":");
+			int row = listePlace.size() + 2;
+		
+			panel.add(lblPlace, "cell 1 " + row);
+			lblRang = new JLabel("Rang:");
+			panel.add(lblRang, "cell 3 " + row + ",alignx trailing");
+			comboBox_1 = new JComboBox<Integer>();
+			panel.add(comboBox_1, "flowx,cell 4 " + row + ",growx");
+			lblNumero = new JLabel("Num\u00E9ro place:");
+			panel.add(lblNumero, "cell 4 "+ row);
+			comboBox_2 = new JComboBox<Integer>();
+			panel.add(comboBox_2, "cell 4 " + row );	
+		}
+		
+		public void remove(){
+			panel.remove(lblPlace);
+			panel.remove(lblRang);
+			panel.remove(lblNumero);
+			panel.remove(comboBox_1);
+			panel.remove(comboBox_2);
+		}
+		
+		public JComboBox<Integer> getRangComboBox(){
+			return comboBox_1;
+		}
+		
+		public JComboBox<Integer> getNumeroComboBox(){
+			return comboBox_2;
+		}
+	}
 	
-	public void ajoutPlace() {
-		ArrayList<JComboBox<Integer>> placeData = new ArrayList<JComboBox<Integer>>();
-		JLabel lblPlace = new JLabel("Place " + (listePlace.size() + 1) +":");
-		int row = listePlace.size() + 2;
+	public PlaceObject ajoutPlace() {
 		//remove paimement + validation		
 		panel.remove(lblReglement);
 		panel.remove(textField_numeroCB);
@@ -84,39 +121,43 @@ public class PanelCenterAchat extends PanelCenter {
 		panel.remove(lblDateDexpiration);
 		panel.remove(textField_DateExpi);
 		panel.remove(btnValider);
-		
-		panel.add(lblPlace, "cell 1 " + row);
-		
-		panel.add(new JLabel("Rang:"), "cell 3 " + row + ",alignx trailing");
-		panel.add(new JLabel("Num\u00E9ro place:"), "cell 4 2");
-		
-		JComboBox<Integer> comboBox_1 = new JComboBox<Integer>();
-		panel.add(comboBox_1, "flowx,cell 4 " + row + ",growx");
-		placeData.add(comboBox_1);
-		
-		
-		JComboBox<Integer> comboBox_2 = new JComboBox<Integer>();
-		panel.add(comboBox_2, "cell 4 " + row );
-		placeData.add(comboBox_2);
-		
-		this.listePlace.add(placeData);
-		
+
+		int row = listePlace.size() + 2;
+		PlaceObject place = new PlaceObject();
+		this.listePlace.add(place);
 		//placement paiement + validation
-		panel.add(lblReglement, "cell 0 "+ (row + 2) +",alignx trailing");
-		panel.add(textField_numeroCB, "cell 1 " + (row + 2) + " 3 1,growx");
-		panel.add(lblCode, "cell 1 " + (row + 2) + ",alignx trailing");
-		panel.add(textField_Code, "cell 2 " + (row + 2) + ",growx");
-		panel.add(lblDateDexpiration, "cell 3 " + (row + 2) + ",alignx trailing");
-		panel.add(textField_DateExpi, "cell 4 " + (row + 2) + ",growx");
-		panel.add(btnValider, "cell 4 " + (row + 3));
+		panel.add(lblReglement, "cell 0 "+ (row + 1) +",alignx trailing");
+		panel.add(textField_numeroCB, "cell 1 " + (row + 1) + " 3 1,growx");
+		panel.add(lblCode, "cell 1 " + (row + 1) + ",alignx trailing");
+		panel.add(textField_Code, "cell 2 " + (row + 1) + ",growx");
+		panel.add(lblDateDexpiration, "cell 3 " + (row + 1) + ",alignx trailing");
+		panel.add(textField_DateExpi, "cell 4 " + (row + 1) + ",growx");
+		panel.add(btnValider, "cell 4 " + (row + 2));
+		return place;
 	}
 	
 	public void enleverPlace(){
 		if(this.listePlace.size()==0){
 			return;
 		}
-		this.listePlace.remove(this.listePlace.size()-1);
-		//TODO: ça n'enlève rien
+		panel.remove(lblReglement);
+		panel.remove(textField_numeroCB);
+		panel.remove(lblCode);
+		panel.remove(textField_Code);
+		panel.remove(lblDateDexpiration);
+		panel.remove(textField_DateExpi);
+		panel.remove(btnValider);
+		PlaceObject place = this.listePlace.get(this.listePlace.size()-1);
+		place.remove();
+		this.listePlace.remove(place);
+		int row = listePlace.size() + 2;
+		panel.add(lblReglement, "cell 0 "+ (row + 1) +",alignx trailing");
+		panel.add(textField_numeroCB, "cell 1 " + (row + 1) + " 3 1,growx");
+		panel.add(lblCode, "cell 1 " + (row + 2) + ",alignx trailing");
+		panel.add(textField_Code, "cell 2 " + (row + 1) + ",growx");
+		panel.add(lblDateDexpiration, "cell 3 " + (row + 1) + ",alignx trailing");
+		panel.add(textField_DateExpi, "cell 4 " + (row + 1) + ",growx");
+		panel.add(btnValider, "cell 4 " + (row + 2));
 	}
 
 	public JLabel getLblTotal() {
@@ -139,8 +180,19 @@ public class PanelCenterAchat extends PanelCenter {
 		return comboBox_cat;
 	};
 	
+	public ArrayList<PlaceObject> getListePlace(){
+		return listePlace;
+	}
 	public JButton getBtnValider(){
 		return btnValider;
 	}
-	
+	public JTextField getNumeroCBField(){
+		return textField_numeroCB;
+	}
+	public JTextField getCodeField(){
+		return textField_Code;
+	}
+	public JTextField getDateExpField(){
+		return textField_DateExpi;
+	}
 }

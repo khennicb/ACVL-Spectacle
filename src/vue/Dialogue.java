@@ -27,6 +27,10 @@ public class Dialogue {
 		this.frame.setVisible(true);
 	}
 	
+	public void close(){
+		this.frame.dispose();
+	}
+	
 	public JDialog getFrame() {
 		return frame;
 	}

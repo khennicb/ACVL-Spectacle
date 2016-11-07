@@ -1,7 +1,7 @@
 package modele;
 
 import java.util.ArrayList;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 public class Dossier {
@@ -11,8 +11,7 @@ public class Dossier {
     private Client client;
     private List<Billet> billets;
 
-    public Dossier(int numero, float montant, Date date_achat, Client client) {
-        this.numero = numero;
+    public Dossier(float montant, Date date_achat, Client client) {
         this.montant = montant;
         this.date_achat = date_achat;
         this.client = client;

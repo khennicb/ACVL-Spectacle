@@ -8,6 +8,7 @@ import java.sql.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -398,15 +399,15 @@ public void insertDossier(Dossier dossier){
             int key = 0;
             
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO DOSSIER(MONTANT, DATE) VALUES(?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                    .prepareStatement("INSERT INTO DOSSIER(MONTANT, DATE_TRANSACTION) VALUES(?,?)", Statement.RETURN_GENERATED_KEYS);
             
             
             String date = "" + dossier.getDate_achat().getYear()+ "-" + dossier.getDate_achat().getMonth()+ "-" + dossier.getDate_achat().getDay() ;
             
-            preparedStatement.setString(3, date);  // as ISO8601 strings ("YYYY-MM-DD").
+            preparedStatement.setString(2, date);  // as ISO8601 strings ("YYYY-MM-DD").
             
             preparedStatement.setFloat(1, dossier.getMontant());
-            preparedStatement.setString(2, date);
+            //preparedStatement.setString(2, date);
             preparedStatement.executeUpdate();
             
            statement = connection.createStatement(); 
@@ -533,36 +534,41 @@ public void insertDossier(Dossier dossier){
         int dossier_id;
         int place_id;
         int utilisateur_id;
+        int achete;
         if(siegeOccupe instanceof Billet) {
             representation_id = ((Billet)siegeOccupe).getRepresentation().getNumero();
             dossier_id = ((Billet)siegeOccupe).getDossier().getNumero();
             place_id = ((Billet)siegeOccupe).getPlace().getNumero();
             utilisateur_id = ((Billet)siegeOccupe).getDossier().getClient().getNumero();
+            achete=1;
+            
         } else {
             representation_id = ((Reservation)siegeOccupe).getRepresentation().getNumero();
             dossier_id = 0;
             place_id = ((Reservation)siegeOccupe).getPlace().getNumero();
             utilisateur_id = ((Reservation)siegeOccupe).getClient().getNumero();
+            achete=0;
         }
         
         try {
             int key = 0;
             PreparedStatement preparedStatement = connection
-                    .prepareStatement("INSERT INTO PLACE_OCCUPE (REPRESENTATION, PLACE, DOSSIER, UTILISATEUR) VALUES(?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
+                    .prepareStatement("INSERT INTO PLACE_OCCUPE (REPRESENTATION, PLACE, DOSSIER, PROPRIETAIRE, ACHETE) VALUES(?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setInt(1, representation_id);
-            preparedStatement.setInt(2, dossier_id);
-            preparedStatement.setInt(3, place_id);
+            preparedStatement.setInt(2, place_id);
+            preparedStatement.setInt(3, dossier_id);
             preparedStatement.setInt(4, utilisateur_id);
-
+            preparedStatement.setInt(5, achete);
             preparedStatement.executeUpdate();
            statement = connection.createStatement(); 
            ResultSet rs = preparedStatement.getGeneratedKeys();
 
-            siegeOccupe.setNumero(key);
 
             if (rs != null && rs.next()) {
                 key = (int)rs.getLong(1);
             }
+            
+            siegeOccupe.setNumero(key);
         } catch (SQLException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
@@ -666,6 +672,81 @@ public void insertDossier(Dossier dossier){
             e.printStackTrace();
         }
         return spectacle;
+    }
+    
+    public Place selectPlace(Salle salle, Integer rang, Integer numero) {
+    	Place place = null;
+    	try {
+            statement = connection.createStatement(); 
+            ResultSet rs = statement.executeQuery( "SELECT * FROM PLACE WHERE SALLE="+salle.getNumero()
+            				+" AND NUMERO_DE_RANG="+rang+" AND PLACE_DANS_LE_RANG="+numero+";");
+             if ( rs.next() ) {
+            	 CategoriePlaces cat= this.selectCategorie(rs.getInt("CATEGORIE"));
+            	 place = new Place(rs.getInt("NUMERO_DE_RANG"), rs.getInt("PLACE_DANS_LE_RANG"), cat, salle);
+            	 place.setNumero(rs.getInt("PLACE_ID"));
+             }
+             rs.close();
+         } catch (SQLException e) {
+             // TODO Auto-generated catch block
+             e.printStackTrace();
+         }
+		return place;
+	}
+    
+    public HashMap<Integer,LinkedList<Integer>> selectAvailablePlace(Representation representation, CategoriePlaces categorie){
+    	HashMap<Integer, LinkedList<Integer>> map = new HashMap<Integer, LinkedList<Integer>>();
+    	try {
+            statement = connection.createStatement(); 
+            
+            ResultSet rs = statement.executeQuery( "SELECT * FROM PLACE WHERE SALLE="+representation.getSalle().getNumero()
+            		+" AND CATEGORIE = "+categorie.getNumero()
+            		+" AND PLACE_ID NOT IN (SELECT PLACE FROM PLACE_OCCUPE WHERE REPRESENTATION="+representation.getNumero()+");");
+             while ( rs.next() ) {
+            	 if(!map.containsKey(rs.getInt("NUMERO_DE_RANG"))){
+            		 map.put(rs.getInt("NUMERO_DE_RANG"),new LinkedList<Integer>());
+            	 }
+            	 map.get(rs.getInt("NUMERO_DE_RANG")).add(rs.getInt("PLACE_DANS_LE_RANG"));
+             }
+             rs.close();
+         } catch (SQLException e) {
+             // TODO Auto-generated catch block
+             e.printStackTrace();
+         }
+    	return map;
+    }
+    
+    public int countBilletRepresentation(Representation representation){
+    	int count = 0;
+    	try {
+            statement = connection.createStatement(); 
+            
+            ResultSet rs = statement.executeQuery( "SELECT COUNT(*) FROM PLACE_OCCUPE WHERE DOSSIER <> 0 AND REPRESENTATION="+representation.getNumero()+";");
+             while ( rs.next() ) {
+            	 count = rs.getInt(1);
+             }
+             rs.close();
+         } catch (SQLException e) {
+             // TODO Auto-generated catch block
+             e.printStackTrace();
+         }
+    	return count;
+    }
+    
+    public int countReservationRepresentation(Representation representation){
+    	int count = 0;
+    	try {
+            statement = connection.createStatement(); 
+            
+            ResultSet rs = statement.executeQuery( "SELECT COUNT(*) FROM PLACE_OCCUPE WHERE DOSSIER = 0 AND REPRESENTATION="+representation.getNumero()+";");
+             while ( rs.next() ) {
+            	 count = rs.getInt(1);
+             }
+             rs.close();
+         } catch (SQLException e) {
+             // TODO Auto-generated catch block
+             e.printStackTrace();
+         }
+    	return count;
     }
     
     public LinkedList<Spectacle> selectAllSpectacle(){
@@ -902,6 +983,8 @@ public void insertDossier(Dossier dossier){
         }
         return list;
     }
+
+	
     
     
 }

@@ -2,6 +2,7 @@ package vue;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -10,9 +11,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.JTextField;
 
 import vue.Center.PanelCenter;
 import vue.Center.PanelCenterAchat;
+import vue.Center.PanelCenterAchat.PlaceObject;
 
 public class FenetreAchat extends Dialogue {
 	
@@ -34,8 +37,8 @@ public class FenetreAchat extends Dialogue {
 		
 	}
 
-	public void ajoutPlace(){
-		((PanelCenterAchat)this.center).ajoutPlace();
+	public PanelCenterAchat.PlaceObject ajoutPlace(){
+		return ((PanelCenterAchat)this.center).ajoutPlace();
 	}
 	
 	public void enleverPlace(){
@@ -62,7 +65,20 @@ public class FenetreAchat extends Dialogue {
 		return ((PanelCenterAchat)this.center).getComboBoxCategory();
 	};
 	
+	public ArrayList<PlaceObject> getListePlace(){
+		return ((PanelCenterAchat)this.center).getListePlace();
+	}
 	public JButton getBtnValider(){
 		return ((PanelCenterAchat)this.center).getBtnValider();
+	}
+
+	public JTextField getNumeroCBField(){
+		return ((PanelCenterAchat)this.center).getNumeroCBField();
+	}
+	public JTextField getCodeField(){
+		return ((PanelCenterAchat)this.center).getCodeField();
+	}
+	public JTextField getDateExpField(){
+		return ((PanelCenterAchat)this.center).getDateExpField();
 	}
 }
